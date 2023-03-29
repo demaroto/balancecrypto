@@ -1,0 +1,16 @@
+.dark .text1{
+    color: #e53b3b !important;
+}
+.dark .back{
+    /*background-color: #212529 !important;*/
+    color:#025148;
+}
+
+.border-bottom-dark{
+    border-bottom-color: #3be588;
+    border-bottom-style: solid;
+    border-bottom-width: 1.5px;
+   
+}
+
+

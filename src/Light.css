@@ -1,0 +1,13 @@
+.light .background{
+    background-color: #FFFFFF;
+}
+.light .text{
+    color: #212529;
+}
+
+.border-bottom-light{
+    border-bottom-color: #3be588;
+    border-bottom-style: solid;
+    border-bottom-width: 1.5px;
+}
+
