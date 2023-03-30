@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import coingeckoApi from '../services/coingecko.api';
 import { PlusCircleFill, PlusCircleDotted, Wallet } from 'react-bootstrap-icons';
 import { changeCoin } from '../redux/actions/coinSlice';
 import { useNavigate  } from "react-router-dom";
@@ -63,14 +62,6 @@ const CalculatorComponent = () => {
         }
     }
 
-
-    const releaseStorageCoin = () => {
-        coingeckoApi.get('/coins').then((response) => { 
-        
-            localStorage.setItem('coins', JSON.stringify(response.data));
-        });
-    }
-
     const getNewPrice = (oldPrice, base = 5) => oldPrice * base;
     const generatePrices = (price) => {
         const values  = [];
@@ -88,15 +79,6 @@ const CalculatorComponent = () => {
         return values;
     }
     
-    
-    useEffect(() => {
-        if (localStorage.getItem('coins') === null) {
-            releaseStorageCoin()
-        }
-        
-    }, []);
-
-  
 
     useEffect(() => {
   

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { usDollar } from '../utils/usCurrency';
 import { changeCryptos } from '../redux/actions/cryptoSlice';
-import coingeckoApi from '../services/coingecko.api';
 import { useNavigate } from 'react-router-dom';
 import { House } from 'react-bootstrap-icons';
 
@@ -33,14 +32,7 @@ const WalletComponent = () => {
         }
     }
 
-    const releaseStorageCoin = () => {
-        coingeckoApi.get('/coins').then((response) => { 
-            
-            dispatch(changeCryptos(response.data))
-           
-            localStorage.setItem('coins', JSON.stringify(response.data));
-        });
-    }
+    
 
     useEffect(() => {
         

@@ -16,11 +16,11 @@ const ListWalletComponent = () => {
 
     const getBalances = () => {
         const wallet = localStorage.getItem('following')
-        if (wallet) {
+        if (wallet && cryptos.length > 0) {
             const walletParse = JSON.parse(wallet)
             
             const values = walletParse.map((obj, index) => {
-                const prices = cryptocurrencies.filter((price) => price.id === obj.coin)
+                const prices = cryptos.filter((price) => price.id === obj.coin)
                 return {...obj, ...prices[0]}
             })
 
@@ -69,7 +69,7 @@ const ListWalletComponent = () => {
         }
     } 
     useEffect(() => {
-        
+       
         setCryptoCurrencies(cryptos)
         getBalances()
         
@@ -80,7 +80,7 @@ const ListWalletComponent = () => {
         dispatch(changeCryptos(JSON.parse(localStorage.getItem('coins'))))
         setCryptoCurrencies(cryptos)
         getBalances()
-        console.log(balances)
+        
     }, []);
 
 

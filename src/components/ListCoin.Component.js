@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import coingeckoApi from '../services/coingecko.api';
-import { Link } from 'react-router-dom';
+import ApiBalance from '../services/balance_crypto.api';
 import { changeCoin } from '../redux/actions/coinSlice';
 import {changeCryptos} from '../redux/actions/cryptoSlice'
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import AnunciosGoogleFeedComponent from './AnunciosGoogleFeed.Component';
 
 const ListCoinComponent = () => {
     const [coins, setCoins] = useState([])
+   
     const navigate = useNavigate()
     const theme = useSelector((state) => state.theme.value)
     const dispatch = useDispatch()
@@ -50,8 +50,8 @@ const ListCoinComponent = () => {
             const dateStorage = new Date(localStorage.getItem("time_update"));
             const dateNow = new Date();
             const diffTime = Math.abs(dateNow - dateStorage) / 60000;
-
-            //Time de 1 minutos para atualização
+           
+            //Time para atualização
             if (diffTime > 1) {
                
                 updatePrice()
@@ -62,12 +62,14 @@ const ListCoinComponent = () => {
     }
 
     const releaseStorageCoin = () => {
-        coingeckoApi.get('/coins').then((response) => { 
-            
+        ApiBalance.post('/coins').then((response) => { 
+            console.log(response)
             dispatch(changeCryptos(response.data))
             setCoins(response.data);
 
             localStorage.setItem('coins', JSON.stringify(response.data));
+        }).catch((error) => {
+            console.log(error);
         });
     }
 
@@ -105,19 +107,17 @@ const ListCoinComponent = () => {
     }, []);
     return (
         <div className={`border border-success rounded mt-3`}>
-            <div className='d-flex justify-content-end'>
-                <Link to="https://www.coingecko.com/" target={"_blank"} className={`text-${themeText} text-end btn btn-link text-decoration-none`} style={{fontSize:"0.8rem"}}>Font: CoinGecko.com</Link>
-            </div>
-            <div className='form-group'>
-                <input className='form-control w-75 m-2' type='text' placeholder='Search Crypto' onChange={(e) => findCoins(e.target.value)} value={selectedCoin} />
-            </div>
+           
+            
+                <input className='form-control mt-2 mx-2' style={{width: '95%'}} type='text' placeholder='Search Crypto' onChange={(e) => findCoins(e.target.value)} value={selectedCoin} />
+            
             <div className="btn-group-vertical justify-content-start overflow-auto w-100" style={{height:"410px"}}>
                 
                 {coins ? coins.map((coin, key) => { 
                     return (
                         <div className='w-100'>
                             <button key={key} className={`btn btn-outline-success text-${themeText} fs-6 d-flex justify-content-between align-items-center w-100`} onClick={() => selectCoin(coin.id)} style={{maxHeight:"50.05px"}}>
-                                    <span><img src={coin.image} alt="coin" className="rounded-circle" width="25px" height="25px"/> #{key+1} {coin.name.substring(0, 20)}{coin.name.length > 20 ? '...' : ''} <small style={{fontSize:"0.7rem"}}>({String(coin.symbol).toUpperCase()})</small></span>
+                                    <span><img src={coin.image} alt="coin" loading="lazy" className="rounded-circle" width="25px" height="25px"/> #{key+1} {coin.name.substring(0, 20)}{coin.name.length > 20 ? '...' : ''} <small style={{fontSize:"0.7rem"}}>({String(coin.symbol).toUpperCase()})</small></span>
                                     <span className={`badge bg-success badge-pill text-light`}>{usDollarValue.format(Number.parseFloat(coin.current_price).toFixed(15))}</span>
                             </button>
                             {key % 30 === 0 ? <AnunciosGoogleFeedComponent /> : ''}
