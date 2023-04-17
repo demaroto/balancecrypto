@@ -4,6 +4,7 @@ import { usDollar, usDollarValue } from '../utils/usCurrency';
 import { changeCryptos } from '../redux/actions/cryptoSlice';
 import { CurrencyBitcoin } from 'react-bootstrap-icons';
 import AnunciosGoogleComponent from './AnunciosGoogle.Component';
+import { changeCoin } from '../redux/actions/coinSlice';
 
 const ListWalletComponent = () => {
 
@@ -12,6 +13,10 @@ const ListWalletComponent = () => {
     const dispatch = useDispatch()
     const [balances, setBalances] = useState([])
 
+    const selectCoin = (id) => {
+        dispatch(changeCoin(id))
+    }
+
     const getBalances = () => {
         const wallet = localStorage.getItem('following')
         if (wallet) {
@@ -19,7 +24,7 @@ const ListWalletComponent = () => {
             
             setBalances(walletParse.map((value) => {
                 return {
-                    name: value.name, value: value.balance, price: value.current_price, balance: (value.balance * value.current_price), symbol: value.symbol, image: value.image, id: value.id}
+                    name: value.name, value: value.balance, price: value.current_price, balance: (value.balance * value.current_price), id: value.coin}
             }))
            
         }else{
@@ -93,7 +98,7 @@ const ListWalletComponent = () => {
                 </thead>
                 <tbody>
                     {balances.map((balance, key) => {
-                        return <tr key={key} className='text-center align-middle'>
+                        return <tr key={key} className='text-center align-middle' role="button" onClick={() => selectCoin(balance.id)}>
                             <td><CurrencyBitcoin />  {balance.name}</td>
                             <td>{balance.value}</td>
                             <td>{usDollarValue.format(Number.parseFloat(balance.price).toFixed(15))}</td>
