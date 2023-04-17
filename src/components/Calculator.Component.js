@@ -1,22 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { PlusCircleFill, PlusCircleDotted, Wallet } from 'react-bootstrap-icons';
+import { PlusCircleFill, PlusCircleDotted, CurrencyBitcoin, CashStack } from 'react-bootstrap-icons';
 import { changeCoin } from '../redux/actions/coinSlice';
-import { useNavigate  } from "react-router-dom";
 import { usDollar, usDollarValue } from '../utils/usCurrency';
 
 const CalculatorComponent = () => {
 
     const dispatch = useDispatch()
-    const navigate = useNavigate();
     const theme = useSelector((state) => state.theme.value)
     const coin = useSelector((state) => state.coin.value)
     const cryptos = useSelector((state) => state.cryptos.value)
     const [meBalance, setMeBalance] = useState(0)
+    const [cryptoName, setCryptoName] = useState('');
     const [cryptosFollow, setCryptosFollow] = useState([])
 
-    const [image, setImage] = useState(null);
-    const [name, setName] = useState(null);
     const [crypto, setCrypto] = useState(0)
     const themeText = theme === 'dark' ? 'light' : 'dark';
     const balanceUsd = () => Number.parseFloat(Number.isFinite(Number.parseFloat(meBalance * crypto)) ? meBalance * crypto : 0).toFixed(2);
@@ -28,26 +25,19 @@ const CalculatorComponent = () => {
         return index === -1 ? 0 : (text.length - index - 1);
     }
 
-    const getCurrentPrice = (id) => {
-       
-        let coin = cryptos !== null ? cryptos.filter(c => c.id === id) : []
-        if (coin.length > 0) {
-            setCrypto(Number.parseFloat(coin[0].current_price));
-            setImage(coin[0].image);
-            setName(coin[0].name);
-        }
-    }
+   
 
     const followCrypto = () => {
         const followStorage = localStorage.getItem('following')
         if (followStorage === null && meBalance > 0 && coin !== null) {
+            console.log([{ balance: meBalance, coin: crypto, name: cryptoName}])
             console.log('create following')
-            localStorage.setItem('following', JSON.stringify([{ balance: meBalance, coin: coin }]));
+            localStorage.setItem('following', JSON.stringify([{ balance: meBalance, coin: coin, name: cryptoName, current_price: crypto}]));
         }
         if (followStorage !== null) {
             console.log('update following')
             const currentFollow = JSON.parse(followStorage);
-            currentFollow.push({ balance: meBalance, coin: coin })
+            currentFollow.push({ balance: meBalance, coin: crypto, name: cryptoName, current_price: crypto })
             localStorage.setItem('following', JSON.stringify(currentFollow))
         }
 
@@ -85,28 +75,34 @@ const CalculatorComponent = () => {
         const newValues = generatePrices(crypto).map(price => {return {value: meBalance * price, price: price, digits: countPlaces(crypto)}})
         setBalances(newValues);
        
-        getCurrentPrice(coin || localStorage.getItem('coin'));
-        dispatch(changeCoin(coin || localStorage.getItem('coin')))
+        dispatch(changeCoin(cryptoName || localStorage.getItem('coin')))
         loadFollowCrypto()
        
 
     }, [crypto, meBalance, coin, cryptos]);
     return (
-        <div className='mt-3'>               
+        <div className='mt-3'> 
+        <div className={`input-group mb-3 bg-${theme}`}>
+                <div className={`input-group-prepend`}>
+                    <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderRight:"0", marginRight:"-5px"}}><CurrencyBitcoin className='m-1' /> Crypto Name</span>
+                </div>
+                <input id="cryptoname" className="form-control" type="text" placeholder='Crypto Name' value={cryptoName} onChange={(e) => setCryptoName(e.target.value)}/> 
+            </div>      
             <div className={`input-group mb-3 bg-${theme}`}>
                 <div className={`input-group-prepend`}>
-                    <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderRight:"0", marginRight:"-5px"}}>My Balance</span>
+                    <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderRight:"0", marginRight:"-5px"}}><CurrencyBitcoin className='m-1'/> Crypto Price</span>
                 </div>
-                <input id="me" className="form-control" type="text" placeholder='0.025' value={meBalance} onChange={(e) => setMeBalance(e.target.value.replaceAll(",", ""))}/> 
+                <input id="crypto" readOnly={cryptoName.length > 0 ? false : true} className="form-control" type="text" placeholder='0.025' value={crypto} onChange={(e) => setCrypto(Number.isNaN(e.target.value.replaceAll(",", "")) ? 0 : e.target.value.replaceAll(",", ""))}/>
+                
+            </div>        
+            <div className={`input-group mb-3 bg-${theme}`}>
+                <div className={`input-group-prepend`}>
+                    <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderRight:"0", marginRight:"-5px"}}><CashStack className='m-1' /> My Balance</span>
+                </div>
+                <input id="me" readOnly={cryptoName.length > 0 ? false : true} className="form-control" type="text" placeholder='0.025' value={meBalance} onChange={(e) => setMeBalance(e.target.value.replaceAll(",", ""))}/> 
             </div>
             
-            <div className={`input-group mb-3 bg-${theme}`}>
-                <div className={`input-group-prepend`}>
-                    <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderRight:"0", marginRight:"-5px"}}><img className={`rounded-circle`} src={image || "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"} width={20} height={20} alt="Crypto" /> {name} Price</span>
-                </div>
-                <input id="crypto" readOnly={true} className="form-control" type="text" placeholder='0.025' value={usDollarValue.format(crypto.toFixed(15))} onChange={(e) => setCrypto(Number.isNaN(e.target.value.replaceAll(",", "")) ? 0 : e.target.value.replaceAll(",", ""))}/>
-                
-            </div>
+            
 
             <div className="d-flex container rounded m-2" style={{backgroundColor: "#3be588"}}>
                 <div className='d-flex'>
@@ -114,7 +110,6 @@ const CalculatorComponent = () => {
                 </div>
                 <div className='d-flex align-items-center btn-group'>
                     <button className={`btn bg-primary text-light`} onClick={() => followCrypto()}>{cryptosFollow.filter((c) => c === coin).length > 0 ? <PlusCircleFill /> : <PlusCircleDotted />}</button>
-                    <button className={`btn bg-success text-light`} onClick={() => navigate('/wallet')}><Wallet /> Wallet {cryptosFollow.length > 0 ? <span className='badge badge-pill bg-dark'>{cryptosFollow.length}</span> : ''}</button>
                 </div>
                 
             </div>
@@ -125,7 +120,7 @@ const CalculatorComponent = () => {
                     </tr>
                     <tr>
                     <th scope="col">#</th>
-                    <th scope="col">{name} Price Projection</th>
+                    <th scope="col">Price Projection</th>
                     <th scope="col">Balance Projection ($)</th>
                     
                     </tr>

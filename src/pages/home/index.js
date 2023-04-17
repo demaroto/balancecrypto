@@ -2,9 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux'
 import HeaderComponent from '../../components/Header.Component';
 import CalculatorComponent from '../../components/Calculator.Component';
-import ListCoinComponent from '../../components/ListCoin.Component';
 import AboutCryptoComponent from '../../components/AboutCrypto.Component';
 import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
+import WalletComponent from '../../components/Wallet.Component';
+import ListWalletComponent from '../../components/ListWallet.Component';
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     return (
@@ -17,8 +18,9 @@ const Index = () => {
                         <AboutCryptoComponent />
                     </div>
                     <div className="col-12 col-md-4" >
-                       <ListCoinComponent />
+                       <WalletComponent />
                         <AnunciosGoogleComponent />
+                        <ListWalletComponent />
 
                     </div>
                 </div>

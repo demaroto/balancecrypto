@@ -4,7 +4,7 @@ const AnunciosGoogleComponent = () => {
     return (
         <div>
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9315918402008490"
-        crossorigin="anonymous"></script>
+        crossOrigin="anonymous"></script>
                         
                         <ins className="adsbygoogle"
                             style={{display:'block'}}

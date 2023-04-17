@@ -12,7 +12,7 @@ const ListCoinComponent = () => {
     const navigate = useNavigate()
     const theme = useSelector((state) => state.theme.value)
     const dispatch = useDispatch()
-    const [selectedCoin, setSelectedCoin] = useState(null)
+    const [selectedCoin, setSelectedCoin] = useState('')
     const themeText = theme === 'dark' ? 'light' : 'dark';
     const usDollarValue = Intl.NumberFormat("en-US", { maximumSignificantDigits: 4, style: "currency", currency: "USD", });
 
@@ -62,15 +62,17 @@ const ListCoinComponent = () => {
     }
 
     const releaseStorageCoin = () => {
-        ApiBalance.post('/coins').then((response) => { 
-            console.log(response)
+
+        ApiBalance.get('/coins').then((response) => { 
+            
             dispatch(changeCryptos(response.data))
             setCoins(response.data);
 
             localStorage.setItem('coins', JSON.stringify(response.data));
         }).catch((error) => {
-            console.log(error);
+            console.log('Axios Error: ' + error.message);
         });
+        
     }
 
     const updatePrice = () => {
@@ -89,7 +91,7 @@ const ListCoinComponent = () => {
         const coinStorage = localStorage.getItem('coins');
 
         if (coinStorage === null) { 
-            
+            releaseStorageCoin();
             validateTimeUpdate()
         }
 
