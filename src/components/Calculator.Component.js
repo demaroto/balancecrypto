@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { PlusCircleFill, PlusCircleDotted, CurrencyBitcoin, CashStack } from 'react-bootstrap-icons';
 import { changeCoin } from '../redux/actions/coinSlice';
 import { usDollar, usDollarValue } from '../utils/usCurrency';
+import { changeCryptos } from '../redux/actions/cryptoSlice';
 
 const CalculatorComponent = () => {
 
@@ -40,6 +41,8 @@ const CalculatorComponent = () => {
             currentFollow.push({ balance: meBalance, coin: crypto, name: cryptoName, current_price: crypto })
             localStorage.setItem('following', JSON.stringify(currentFollow))
         }
+
+        dispatch(changeCryptos(localStorage.getItem('following')))
 
         loadFollowCrypto()
     }
