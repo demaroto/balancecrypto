@@ -112,7 +112,7 @@ const CalculatorComponent = () => {
                     <h5 className={`card-header h4 text-dark`}><span className={`badge text-dark`}>Current Balance: </span>{usDollar.format(balanceUsd())}</h5>   
                 </div>
                 <div className='d-flex align-items-center btn-group'>
-                    <button className={`btn bg-primary text-light`} onClick={() => followCrypto()}>{cryptosFollow.filter((c) => c === coin).length > 0 ? <PlusCircleFill /> : <PlusCircleDotted />}</button>
+                    <button className={`btn bg-primary text-light`} onClick={() => followCrypto()}>{cryptosFollow.filter((c) => c === coin).length > 0 ? <PlusCircleFill /> : <PlusCircleDotted />} Add</button>
                 </div>
                 
             </div>

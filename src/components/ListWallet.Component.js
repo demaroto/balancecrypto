@@ -93,7 +93,7 @@ const ListWalletComponent = () => {
                 </thead>
                 <tbody>
                     {balances.map((balance, key) => {
-                        return <tr key={key}>
+                        return <tr key={key} className='text-center align-middle'>
                             <td><CurrencyBitcoin />  {balance.name}</td>
                             <td>{balance.value}</td>
                             <td>{usDollarValue.format(Number.parseFloat(balance.price).toFixed(15))}</td>
