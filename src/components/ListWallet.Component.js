@@ -83,17 +83,17 @@ const ListWalletComponent = () => {
 
     return (
         <div className='mt-3'>
-            <table className={`table table-${theme} table-striped table-bordered table-responsive`}>
+            <table className={`table table-${theme} table-striped table-bordered table-responsive table-hover`}>
                 <caption>{balances.length > 1 ? `${balances.length} Cryptocurrencies` : `${balances.length} Cryptocurrency`}</caption>
                 <thead>
                     <tr>
                         <th colSpan={6} className={`text-center`}>Wallet</th>
                     </tr>
                     <tr>
-                    <th scope="col">Crypto</th>
-                    <th scope="col">Balance</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Value in USD</th>
+                    <th scope="col" className='text-center'>Crypto</th>
+                    <th scope="col" className='text-center'>Balance</th>
+                    <th scope="col" className='text-center'>Price</th>
+                    <th scope="col" className='text-center'>USD</th>
                     </tr>
                 </thead>
                 <tbody>

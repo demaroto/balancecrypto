@@ -5,6 +5,7 @@ import CalculatorComponent from '../../components/Calculator.Component';
 import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 import WalletComponent from '../../components/Wallet.Component';
 import ListWalletComponent from '../../components/ListWallet.Component';
+import TwitterComponent from '../../components/Twitter.Component';
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     return (
@@ -19,6 +20,7 @@ const Index = () => {
                        <WalletComponent />
                         <AnunciosGoogleComponent />
                         <ListWalletComponent />
+                        <TwitterComponent />
 
                     </div>
                 </div>
