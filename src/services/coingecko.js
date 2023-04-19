@@ -18,4 +18,9 @@ const getInfoCoin = async (id) => {
     return result.data
 }
 
-export { SearchCoin, getInfoCoin };
+const getListCoin = async () => {
+    const result = await ApiCoinGecko.get(`coins/list?include_platform=false`)
+    return result.data
+}
+
+export { SearchCoin, getInfoCoin, getListCoin };

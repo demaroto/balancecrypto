@@ -6,11 +6,13 @@ import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 import WalletComponent from '../../components/Wallet.Component';
 import ListWalletComponent from '../../components/ListWallet.Component';
 import TwitterComponent from '../../components/Twitter.Component';
+import TokenRouterComponent from '../../components/TokenRouter.Component';
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     return (
         <div className='h-100'>
             <HeaderComponent />
+            
             <main className={[theme, "container", "h-100", `bg-${theme}`].join(" ")}>
                 <div className="row">
                     <div className="col-12 col-md-8">
@@ -25,6 +27,9 @@ const Index = () => {
                     </div>
                 </div>
                
+                <div className='container-fluid'>
+                        <TokenRouterComponent />
+                </div>
             </main>
         </div>
     );

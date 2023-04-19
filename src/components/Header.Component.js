@@ -9,7 +9,7 @@ const HeaderComponent = () => {
     return (
         <div>
             <nav className={['navbar', 'sticky-top', 'navbar-expand-lg', `border-bottom-${theme}`, `navbar-${theme}`, `bg-${theme}`].join(' ')}>
-                <Link className="navbar-brand" to="/">Balance Crypto</Link>
+                <Link className="navbar-brand" to="/"><img width="30px" className='ms-3' src='/logo_balance_crypto.png' alt="logo"/></Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <ThemeSwitcher />
                 </button>

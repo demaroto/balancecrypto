@@ -1,7 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/home"
-import WalletPage from "./pages/wallet"
 
 const router = createBrowserRouter([
   {
@@ -9,9 +8,11 @@ const router = createBrowserRouter([
     element: <HomePage />
   },
   {
-    path: '/wallet',
-    element: <WalletPage />
-  }
+    path: '/token/:id',
+    element: <HomePage />
+  },
+  
+
 ]);
 
 function App() {

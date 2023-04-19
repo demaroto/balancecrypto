@@ -13,6 +13,7 @@ import { changePage } from '../redux/actions/twitterSlice';
 const CalculatorComponent = () => {
 
     const dispatch = useDispatch()
+    
     const theme = useSelector((state) => state.theme.value)
     const coin = useSelector((state) => state.coin.value)
     const cryptos = useSelector((state) => state.cryptos.value)
@@ -146,17 +147,19 @@ const CalculatorComponent = () => {
         const newValues = generatePrices(crypto).map(price => {return {value: meBalance * price, price: price, digits: countPlaces(crypto)}})
         setBalances(newValues);
        
+        console.log(coin)
         //dispatch(changeCoin(cryptoName || localStorage.getItem('coin')))
         if (coin !== null) {
             
-            loadFollowCrypto(coin)
+            //loadFollowCrypto(coin)
+            findPriceToken(coin)
         }
        
 
     }, [crypto, meBalance, coin, cryptos]);
     return (
         <div className='mt-3'> 
-        <div className={`input-group mb-3 bg-${theme}`}>
+         <div className={`input-group mb-3 bg-${theme}`}>
                 <div className={`input-group-prepend w-100`}>
                     <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{image ? <img src={image} width={40} height={40} alt={`Logo ${cryptoName}`} className='m-1 rounded-circle'/> : <CurrencyBitcoin className='m-1' />} {cryptoName || 'Crypto Name'}</span>
                 </div>
@@ -225,6 +228,7 @@ const CalculatorComponent = () => {
                         </tr>
                     })}
                 </tbody>
+                
             </table>
         </div>
     );
