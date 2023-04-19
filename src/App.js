@@ -4,11 +4,11 @@ import HomePage from "./pages/home"
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/token/:id',
     element: <HomePage />
   },
   {
-    path: '/token/:id',
+    path: '/',
     element: <HomePage />
   },
   
