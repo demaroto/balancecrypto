@@ -5,15 +5,21 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { tokens } from '../utils/tokens';
 import { CurrencyBitcoin, Instagram, Twitter } from 'react-bootstrap-icons';
+import * as Scroll from 'react-scroll';
 const TokenRouterComponent = () => {
     const params = useParams()
     const dispatch = useDispatch()
-   
+    const scroll = Scroll.animateScroll;
+
+    const scrollTop = () => {
+        scroll.scrollToTop();
+    }
 
     const validate = () => {
+        console.log(params)
         if (params.id !== undefined) {
 
-            const isValidRoute = tokens.filter(t => t.id === params.id)
+            const isValidRoute = tokens.filter(t => t.symbol === params.id)
     
             if (isValidRoute.length > 0) {
               
@@ -27,11 +33,11 @@ const TokenRouterComponent = () => {
 
     useEffect(() => {
         validate()
-    }, []);
+    }, [params]);
     return (
         <>
         <div className='container'>
-            {tokens.map(token => <Link to={`/token/${token.symbol}`} className='btn btn-outline-success m-1 btn-sm'>{token.name}</Link>)}
+            {tokens.map(token => <Link to={`/token/${token.symbol}`} className='btn btn-outline-success m-1 btn-sm' onClick={() => scrollTop(token.symbol)}>{token.name}</Link>)}
         </div>
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top border-success">
             <div className="col-md-4 d-flex align-items-center">
