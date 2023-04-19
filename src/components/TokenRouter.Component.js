@@ -31,7 +31,7 @@ const TokenRouterComponent = () => {
     return (
         <>
         <div className='container'>
-            {tokens.map(token => <Link to={`https://balancecrypto.com.br/token/${token.id}`} className='btn btn-outline-success m-1'>{token.name}</Link>)}
+            {tokens.map(token => <Link to={`https://balancecrypto.com.br/token/${token.symbol}`} className='btn btn-outline-success m-1 btn-sm'>{token.name}</Link>)}
         </div>
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top border-success">
             <div className="col-md-4 d-flex align-items-center">
