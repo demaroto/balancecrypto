@@ -5,13 +5,67 @@ import { changeCryptos } from '../redux/actions/cryptoSlice';
 import { CurrencyBitcoin } from 'react-bootstrap-icons';
 import AnunciosGoogleComponent from './AnunciosGoogle.Component';
 import { tokens } from '../utils/tokens';
-
+import { getPriceCoins } from '../services/coingecko';
+import {Animated} from "react-animated-css";
+import './styles.css';
 const ListWalletComponent = () => {
 
     const cryptos = useSelector((state) => state.cryptos.value)
     const theme = useSelector((state) => state.theme.value)
     const dispatch = useDispatch()
     const [balances, setBalances] = useState([])
+
+    const validateTimeUpdate = () => {
+       
+        if (localStorage.getItem("time_update") === null) {
+                 localStorage.setItem("time_update", (new Date()).toString())
+                 releaseStorageCoin()
+             
+         }else{
+             const dateStorage = new Date(localStorage.getItem("time_update"));
+             const dateNow = new Date();
+             const diffTime = Math.abs(dateNow - dateStorage) / 60000;
+             
+             //Time para atualização
+             if (diffTime > 5) {
+                 
+                 localStorage.setItem("time_update", (new Date()).toString())
+                 releaseStorageCoin()
+             }
+ 
+         }
+ 
+     }
+
+    const releaseStorageCoin = () => {
+
+        const following = localStorage.getItem('following')
+        if (following !== null) {
+            const parseFollow = JSON.parse(following)
+            const ids = parseFollow.map(coin => coin.id)
+        
+            if (ids.length > 0) {
+                const prices = getPriceCoins(ids)
+                prices.then(c => {
+                    const newPrices = parseFollow.map(f => {
+                        let priceCoinGecko = c.filter(coinGecko => f.id === coinGecko.id)
+                        if (f.id === priceCoinGecko[0].id){
+                            let priceUpdated = f.current_price !== priceCoinGecko[0].current_price
+                            return {balance: f.balance, coin: f.coin, current_price: priceCoinGecko[0].current_price, id: f.id, image: f.image, name: f.name, updated: priceUpdated}
+                        }
+                        return false
+                    })
+                    
+                    if (newPrices.length > 0) {
+                        localStorage.setItem('following', JSON.stringify(newPrices))
+                        getBalances()
+                    }
+                }) 
+            }  
+        }
+       
+        
+    }
 
     const selectCoin = (id) => {
         
@@ -48,8 +102,16 @@ const ListWalletComponent = () => {
     useEffect(() => {
         
         dispatch(changeCryptos(JSON.parse(localStorage.getItem('coins'))))
-       
+        
         getBalances()
+        
+        const interval = setInterval(() => {
+            
+            validateTimeUpdate()
+            
+          }, 5000);
+      
+          return () => clearInterval(interval);
         
     }, []);
 
@@ -74,9 +136,15 @@ const ListWalletComponent = () => {
                 <tbody>
                     {balances.map((balance, key) => {
                         return <tr key={key} className='text-center align-middle' role="button" onClick={() => selectCoin(balance.id)}>
+                                
                             <td><CurrencyBitcoin />  {balance.name}</td>
                             <td>{balance.value}</td>
-                            <td>{usDollarValue.format(Number.parseFloat(balance.price).toFixed(15))}</td>
+                            <td>
+                            <Animated animationIn="pulse" animationOut="pulse" isVisible={true}>
+                                {usDollarValue.format(Number.parseFloat(balance.price).toFixed(15))}
+                            </Animated>
+                            </td>
+                            
                             <td>{usDollar.format(balance.balance)}</td>
                         </tr>
                     })}

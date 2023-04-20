@@ -23,6 +23,7 @@ const CalculatorComponent = () => {
     const [image, setImage] = useState(null);
     const [idCoin, setIdCoin] = useState(null);
     const [symbol, setSymbol] = useState(null);
+    // eslint-disable-next-line
     const [cryptosFollow, setCryptosFollow] = useState([])
 
     const [crypto, setCrypto] = useState(0)

@@ -1,0 +1,10 @@
+@keyframes example {
+    from {background-color: white;}
+    to {background-color: green;}
+    }
+
+.animatePrice{
+    background-color: transparent;
+    animation-name: example;
+  animation-duration: 10s;
+}

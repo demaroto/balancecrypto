@@ -23,4 +23,11 @@ const getListCoin = async () => {
     return result.data
 }
 
-export { SearchCoin, getInfoCoin, getListCoin };
+const getPriceCoins = async (list) => {
+    if (list.length > 0){
+        const result = await ApiCoinGecko.get(`coins/markets?vs_currency=usd&ids=${list.join(',')}&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`)
+        return result.data
+    }
+}
+
+export { SearchCoin, getInfoCoin, getListCoin, getPriceCoins };

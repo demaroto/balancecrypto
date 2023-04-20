@@ -5,6 +5,7 @@ import { changeCoin } from '../redux/actions/coinSlice';
 import {changeCryptos} from '../redux/actions/cryptoSlice'
 import { useNavigate } from 'react-router-dom';
 import AnunciosGoogleFeedComponent from './AnunciosGoogleFeed.Component';
+import { getPriceCoins } from '../services/coingecko';
 
 const ListCoinComponent = () => {
     const [coins, setCoins] = useState([])
@@ -63,6 +64,16 @@ const ListCoinComponent = () => {
 
     const releaseStorageCoin = () => {
 
+        const following = localStorage.getItem('following')
+        if (following !== null) {
+            const parseFollow = JSON.parse(following)
+            const ids = parseFollow.map(coin => coin.id)
+            if (ids.length > 0) {
+                const prices = getPriceCoins(ids)
+                console.log(prices)
+            }  
+        }
+        /*
         ApiBalance.get('/coins').then((response) => { 
             
             dispatch(changeCryptos(response.data))
@@ -72,6 +83,7 @@ const ListCoinComponent = () => {
         }).catch((error) => {
             console.log('Axios Error: ' + error.message);
         });
+        */
         
     }
 
@@ -88,20 +100,11 @@ const ListCoinComponent = () => {
 
     useEffect(() => {
        
-        const coinStorage = localStorage.getItem('coins');
-
-        if (coinStorage === null) { 
-            releaseStorageCoin();
-            validateTimeUpdate()
-        }
-
-        setCoins(JSON.parse(coinStorage))
-
-
-        
+     
+        releaseStorageCoin();
         const interval = setInterval(() => {
             
-            validateTimeUpdate()
+            //validateTimeUpdate()
           }, 5000);
       
           return () => clearInterval(interval);
