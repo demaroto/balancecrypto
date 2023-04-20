@@ -201,9 +201,9 @@ const CalculatorComponent = () => {
             
             
 
-            <div className="d-flex container rounded m-2" style={{backgroundColor: "#3be588"}}>
+            <div className="d-flex container rounded mb-3" style={{backgroundColor: "#3be588"}}>
                 <div className='d-flex'>
-                    <h5 className={`card-header h4 text-dark`}><span className={`badge text-dark`}>Current Balance: </span>{usDollar.format(balanceUsd())}</h5>   
+                    <h5 className={`card-header h4 text-dark`}><span className={`badge text-dark`}>{image ? <img src={image} width={30} height={30} alt={`Logo ${cryptoName}`} className='me-1 rounded-circle'/> : ''}Current Balance: </span>{usDollar.format(balanceUsd())}</h5>   
                 </div>
                 <div className='d-flex align-items-center btn-group'>
                     

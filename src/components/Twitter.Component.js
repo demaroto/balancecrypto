@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 const TwitterComponent = () => {
 
     const twitter = useSelector((state) => state.twitter.value)
+    const theme = useSelector((state) => state.theme.value)
     const [twitterPage, setTwitterPage] = useState(null)
     const randomPage = (min, max) => {
         // get number between min (inclusive) and max (inclusive)
@@ -53,7 +54,8 @@ const TwitterComponent = () => {
                     ''
                   }
                 options={{
-                    height: '400'
+                    height: '400',
+                    theme: theme
                 }}
                 />
         </div>
