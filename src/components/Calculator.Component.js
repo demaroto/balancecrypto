@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { PlusCircleFill, CurrencyBitcoin, CashStack, ArrowDownUp, Trash } from 'react-bootstrap-icons';
+import { PlusCircleFill, CurrencyBitcoin, CashStack, Trash, DatabaseFillUp } from 'react-bootstrap-icons';
 import { changeCoin } from '../redux/actions/coinSlice';
 import { usDollar, usDollarValue } from '../utils/usCurrency';
 import { changeCryptos } from '../redux/actions/cryptoSlice';
@@ -9,6 +9,7 @@ import { getInfoCoin } from '../services/coingecko';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import { changePage } from '../redux/actions/twitterSlice';
+import { tokens } from '../utils/tokens';
 
 const CalculatorComponent = () => {
 
@@ -21,6 +22,7 @@ const CalculatorComponent = () => {
     const [cryptoName, setCryptoName] = useState('');
     const [image, setImage] = useState(null);
     const [idCoin, setIdCoin] = useState(null);
+    const [symbol, setSymbol] = useState(null);
     const [cryptosFollow, setCryptosFollow] = useState([])
 
     const [crypto, setCrypto] = useState(0)
@@ -41,9 +43,12 @@ const CalculatorComponent = () => {
             const result = getInfoCoin(id)
             result.then((info) => {
                 if (info){
+                    console.log(info)
+                    setIdCoin(id)
                     setCryptoName(info.name)
                     setCrypto(info.market_data.current_price.usd);
                     setImage(info.image.small)
+                    setSymbol(info.symbol)
                     if (info.links.twitter_screen_name) {
                         dispatch(changePage(info.links.twitter_screen_name))
                     }
@@ -53,21 +58,31 @@ const CalculatorComponent = () => {
         }
     }
 
+    const redirectToToken = (id) => {
+        const page = tokens.filter(t => t.symbol === id)
+        if (page.length > 0){
+            
+            window.location.href = `/token/${id}`
+            
+        }
+        return null
+    }
+
    
 
     const followCrypto = () => {    
         const followStorage = localStorage.getItem('following')
-        let coinCreated = cryptoName.toLowerCase().replaceAll(' ', '-').concat('-', meBalance)
+
+        console.log(coin)
         if (followStorage === null && meBalance > 0) {
-            console.log([{ balance: meBalance, coin: crypto, name: cryptoName}])
             console.log('create following')
-            localStorage.setItem('following', JSON.stringify([{ balance: meBalance, coin: coinCreated, name: cryptoName, current_price: crypto, image: image}]));
+            localStorage.setItem('following', JSON.stringify([{ balance: meBalance, coin: idCoin, name: cryptoName, current_price: crypto, image: image, id: idCoin}]));
         }
         if (followStorage !== null) {
             console.log('update following')
             const currentFollow = JSON.parse(followStorage);
             const updatedFollow = idCoin === null ? currentFollow : currentFollow.filter(follow => follow.coin !== idCoin)
-            updatedFollow.push({ balance: meBalance, coin: coinCreated, name: cryptoName, current_price: crypto, image: image })
+            updatedFollow.push({ balance: meBalance, coin: idCoin, name: cryptoName, current_price: crypto, image: image, id: idCoin })
             localStorage.setItem('following', JSON.stringify(updatedFollow))
         }
         setIdCoin(null)
@@ -78,7 +93,7 @@ const CalculatorComponent = () => {
 
         dispatch(changeCryptos(localStorage.getItem('following')))
 
-        loadFollowCrypto(null)
+        loadFollowCrypto(coin)
     }
 
     const deleteCrypto = () => {
@@ -97,14 +112,24 @@ const CalculatorComponent = () => {
         }
     }
 
+    const isFollowIt = () => {
+        const followStorage = localStorage.getItem('following');
+        if (followStorage !== null){
+            const current = JSON.parse(followStorage);
+
+            const result = current.filter(follow => follow.id === idCoin)
+            return result.length > 0
+        }
+        return false
+    }
+
     const loadFollowCrypto = (coin) => {
-        console.log(coin)
         const followStorage = localStorage.getItem('following')
         if (followStorage !== null) {
             const currentFollow = JSON.parse(followStorage)
-           
+            
             const currentCoin = currentFollow.filter(crypto => crypto.coin === coin)
-            console.log(currentCoin)
+        
             if (currentCoin.length > 0) {
                 setCryptoName(currentCoin[0].name);
                 setCrypto(currentCoin[0].current_price);
@@ -151,26 +176,26 @@ const CalculatorComponent = () => {
         //dispatch(changeCoin(cryptoName || localStorage.getItem('coin')))
         if (coin !== null) {
             
-            //loadFollowCrypto(coin)
+            loadFollowCrypto(coin)
             findPriceToken(coin)
         }
        
 
-    }, [crypto, meBalance, coin, cryptos]);
+    }, [crypto, meBalance, coin, cryptos, symbol]);
     return (
         <div className='mt-3'> 
          <div className={`input-group mb-3 bg-${theme}`}>
                 <div className={`input-group-prepend w-100`}>
                     <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{image ? <img src={image} width={40} height={40} alt={`Logo ${cryptoName}`} className='m-1 rounded-circle'/> : <CurrencyBitcoin className='m-1' />} {cryptoName || 'Crypto Name'}</span>
                 </div>
-                <Select2Component handleChange={(value) => findPriceToken(value)}/>
+                <Select2Component handleChange={(value) => redirectToToken(value)}/>
             </div>      
                    
             <div className={`input-group mb-3 bg-${theme}`}>
                 <div className={`input-group-prepend w-100`}>
                     <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}><CashStack className='m-1' /> My Balance</span>
                 </div>
-                <input id="me" readOnly={cryptoName.length > 0 ? false : true} className="form-control" step="0.000000000000001" min="0"  type="number" placeholder='0.025' value={meBalance} onChange={(e) => setMeBalance(e.target.value.replaceAll(",", ""))}/> 
+                <input id="me" readOnly={cryptoName && cryptoName.length > 0 ? false : true} className="form-control" step="0.000000000000001" min="0"  type="number" placeholder='0.025' value={meBalance} onChange={(e) => setMeBalance(e.target.value.replaceAll(",", ""))}/> 
             </div>
             
             
@@ -189,12 +214,12 @@ const CalculatorComponent = () => {
                             </Tooltip>
                             )}
                             placement="bottom"
-                        ><button className={`btn bg-primary text-light`} onClick={() => followCrypto()}>{idCoin === null ? <PlusCircleFill /> : <ArrowDownUp />} </button>
+                        ><button className={`btn bg-primary text-light`} onClick={() => followCrypto()}>{isFollowIt() ? <DatabaseFillUp /> : <PlusCircleFill />} </button>
                         </OverlayTrigger>
 
                         
                     
-                    {idCoin !== null ? <OverlayTrigger
+                    {isFollowIt() ? <OverlayTrigger
                             delay={{ hide: 450, show: 300 }}
                             overlay={(props) => (
                             <Tooltip {...props}>

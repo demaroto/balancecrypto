@@ -4,7 +4,7 @@ import { usDollar, usDollarValue } from '../utils/usCurrency';
 import { changeCryptos } from '../redux/actions/cryptoSlice';
 import { CurrencyBitcoin } from 'react-bootstrap-icons';
 import AnunciosGoogleComponent from './AnunciosGoogle.Component';
-import { changeCoin } from '../redux/actions/coinSlice';
+import { tokens } from '../utils/tokens';
 
 const ListWalletComponent = () => {
 
@@ -14,7 +14,11 @@ const ListWalletComponent = () => {
     const [balances, setBalances] = useState([])
 
     const selectCoin = (id) => {
-        dispatch(changeCoin(id))
+        
+        const page = tokens.filter(token => token.id === id)
+        if (page.length > 0) {
+            window.location.href = `/token/${page[0].symbol}`
+        }
     }
 
     const getBalances = () => {
@@ -33,36 +37,7 @@ const ListWalletComponent = () => {
         }
     }
 
-    /*
-   
-    const updateTotal = () => {
-        const wallet = localStorage.getItem('following')
-        if (wallet) {
-            const walletParse = JSON.parse(wallet)
-            
-            const t = walletParse.reduce((acc, value) => acc + (value.balance * value.current_price), 0)
-            return t
-        }else{
-
-            return 0
-        }
-    }
-    const deleteCoin = (key) => {
-        
-        const wallet = localStorage.getItem('following')
-        if (wallet) {
-            const walletParse = JSON.parse(wallet)
-            
-            const values = walletParse.filter((value, index) => index !== key)
-            console.log(walletParse)
-            localStorage.setItem('following', JSON.stringify(values))
-            setBalances(values)
-            getBalances()
-            dispatch(changeTotal(updateTotal()))
-           
-        }
-    } 
-    */
+    
     useEffect(() => {
        
         

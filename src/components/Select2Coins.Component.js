@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Select from 'react-select';
 import { SearchCoin } from '../services/coingecko';
 
-
-
 const Select2CoinsComponent = (props) => {
 
     const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +18,7 @@ const Select2CoinsComponent = (props) => {
                     
                     setIsLoading(false)
                     setMessageNoOptions('Type the name of token')
-                    setOptions(result.coins.map(coin => ({value: coin.id, label: coin.name})))
+                    setOptions(result.coins.map(coin => ({value: String(coin.symbol).toLowerCase(), label: coin.name})))
                 }else{
                     setIsLoading(false)
                     setMessageNoOptions('Not found token')
@@ -48,6 +46,8 @@ const Select2CoinsComponent = (props) => {
                 options={options}
                 onInputChange={(value) => searchOption(value)}
                 onChange={(value) => props.handleChange(value ? value.value : '')}
+                
+                
                 
                 
                 
