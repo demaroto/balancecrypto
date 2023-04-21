@@ -28,8 +28,7 @@ const WalletComponent = () => {
     useEffect(() => {
         
        
-        getBalance()
-        
+        getBalance() 
         
     }, [cryptos, walletTotal, total]);
     

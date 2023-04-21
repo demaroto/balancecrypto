@@ -12,6 +12,7 @@ const ListWalletComponent = () => {
 
     const cryptos = useSelector((state) => state.cryptos.value)
     const theme = useSelector((state) => state.theme.value)
+    const [timeUpdate, setTimeUpdate] = useState(0);
     const dispatch = useDispatch()
     const [balances, setBalances] = useState([])
 
@@ -37,6 +38,24 @@ const ListWalletComponent = () => {
  
      }
 
+    const handleTimeUpdate = () => {
+        const timeStorage = localStorage.getItem("time_update")
+        if (timeStorage !== null) {
+            const dateStorage = new Date(timeStorage)
+            const dateNow = new Date();
+            const diffTime = Math.abs(dateNow - dateStorage) / 60000;
+            return diffTime;
+
+        }
+        return null;
+        
+    }
+
+    const getWidthByTime = ()  => {
+        const timeValue = handleTimeUpdate()
+        setTimeUpdate(timeValue/5*100)
+    }
+
     const releaseStorageCoin = () => {
 
         const following = localStorage.getItem('following')
@@ -58,6 +77,7 @@ const ListWalletComponent = () => {
                     
                     if (newPrices.length > 0) {
                         localStorage.setItem('following', JSON.stringify(newPrices))
+                        dispatch(changeCryptos(JSON.stringify(newPrices)))
                         getBalances()
                     }
                 }) 
@@ -89,6 +109,7 @@ const ListWalletComponent = () => {
 
             setBalances([])
         }
+        
     }
 
     
@@ -97,17 +118,20 @@ const ListWalletComponent = () => {
         
         getBalances()
         
+        
     }, [cryptos]);
     
     useEffect(() => {
         
-        dispatch(changeCryptos(JSON.parse(localStorage.getItem('coins'))))
+        
         
         getBalances()
         
         const interval = setInterval(() => {
             
             validateTimeUpdate()
+            getWidthByTime()
+            dispatch(changeCryptos(balances))
             
           }, 5000);
       
@@ -121,10 +145,16 @@ const ListWalletComponent = () => {
     return (
         <div className='mt-3'>
             <table className={`table table-${theme} table-striped table-bordered table-responsive table-hover`}>
+            
                 <caption>{balances.length > 1 ? `${balances.length} Cryptocurrencies` : `${balances.length} Cryptocurrency`}</caption>
                 <thead>
                     <tr>
-                        <th colSpan={6} className={`text-center`}>Wallet</th>
+                        <th colSpan={6} className={`text-center`}>
+                            Wallet
+                        <div className="progress" style={{height: '10px'}}>
+                            <div className="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${timeUpdate}%`}} aria-valuenow={timeUpdate} aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </th>
                     </tr>
                     <tr>
                     <th scope="col" className='text-center'>Crypto</th>
