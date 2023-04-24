@@ -7,6 +7,7 @@ import WalletComponent from '../../components/Wallet.Component';
 import ListWalletComponent from '../../components/ListWallet.Component';
 import TwitterComponent from '../../components/Twitter.Component';
 import TokenRouterComponent from '../../components/TokenRouter.Component';
+import ListCoinComponent from '../../components/ListCoin.Component';
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     return (
@@ -20,14 +21,22 @@ const Index = () => {
                     </div>
                     <div className="col-12 col-md-4" >
                        <WalletComponent />
-                        <AnunciosGoogleComponent />
                         <ListWalletComponent />
-                        <TwitterComponent />
+                        <AnunciosGoogleComponent />
 
                     </div>
                 </div>
                
                 <div className='container-fluid'>
+                    <div className="row">
+                        <div className="col-12 col-md-6">
+                        <ListCoinComponent />
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <TwitterComponent />
+                        </div>
+                    </div>
+                    
                         <TokenRouterComponent />
                 </div>
             </main>
