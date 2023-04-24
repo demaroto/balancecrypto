@@ -54,7 +54,7 @@ const TwitterComponent = () => {
                     ''
                   }
                 options={{
-                    height: '400',
+                    height: '450',
                     theme: theme
                 }}
                 />
