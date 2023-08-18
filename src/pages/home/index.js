@@ -8,12 +8,14 @@ import ListWalletComponent from '../../components/ListWallet.Component';
 import TwitterComponent from '../../components/Twitter.Component';
 import TokenRouterComponent from '../../components/TokenRouter.Component';
 import ListCoinComponent from '../../components/ListCoin.Component';
+import LinkListComponent from '../../components/LinkList.Component';
+
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     return (
         <div className='h-100'>
             <HeaderComponent />
-            
+            <LinkListComponent />
             <main className={[theme, "container", "h-100", `bg-${theme}`].join(" ")}>
                 <div className="row">
                     <div className="col-12 col-md-8">
