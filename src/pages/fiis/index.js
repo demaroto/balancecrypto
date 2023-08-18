@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux'
 import HeaderComponent from '../../components/Header.Component';
-
-import TokenRouterComponent from '../../components/TokenRouter.Component';
 import LinkListComponent from '../../components/LinkList.Component';
 import { Meses } from '../../utils/meses';
 const Index = () => {
@@ -30,13 +28,12 @@ const Index = () => {
         console.log(parseAportes)
        
         if (parseAportes) {
-            const aporteAtual = parseAportes.aportes.filter(v => {
-                return v.ativo === ativo
-            }).reduce((acc, v) => { 
-                let rendimento = parseFloat(((v.valorAtivo * v.dy) / 100) * parseInt(v.valorAporte / v.valorAtivo))
-                return parseFloat(v.valorAporte) + rendimento + acc
-            }, 0);
-            const novoAporte = parseFloat(valorAporte) + parseFloat(aporteAtual)
+            const ultimoRendimento = parseAportes.aportes.filter(aporte => aporte.ativo === ativo)
+            const rendimento = ultimoRendimento.length > 0 ? ultimoRendimento[ultimoRendimento.length - 1] : null
+            const aporteAtual = rendimento ? ultimoRendimento[ultimoRendimento.length - 1].valorAporte : 0
+            
+            const calcRendimento = rendimento ? rendimento.valorAtivo * rendimento.dy / 100 * parseInt(rendimento.valorAporte / rendimento.valorAtivo) : 0
+            const novoAporte = parseFloat(valorAporte) + parseFloat(aporteAtual) + calcRendimento
             parseAportes.aportes.push({ativo, mes, ano, valorAtivo, valorAporte: novoAporte, dy, data: new Date()})
             localStorage.setItem('aportes', JSON.stringify(parseAportes))
         }else{
@@ -66,6 +63,12 @@ const Index = () => {
         
     }
 
+    const clearAllListeners = () => {
+        localStorage.removeItem('aportes')
+        setListAtivos([])
+        mountTable()
+    }
+
     useEffect(() => {
         mountTable();
     }, []);
@@ -77,6 +80,9 @@ const Index = () => {
             <LinkListComponent />
             <main className={[theme, "container", "h-100", `bg-${theme}`].join(" ")}>
                 <div className="row">
+                    <div className='col-12 mt-2 mb-2 d-flex justify-content-end'>
+                        <button className={`btn bg-danger text-white`} type='button' onClick={() => clearAllListeners()} >Limpar</button>
+                    </div>
                     <div className="col-12 col-md-6">
                         <div className={`input-group-prepend w-100 mt-1`}>
                             <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Sigla Ativo'}</span>
