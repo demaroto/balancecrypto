@@ -183,34 +183,37 @@ const Index = () => {
                                 })
                             }
                         </div>
-                        {listAtivos && <div className="col-12">
-                           
-                            <table className={`table text-${themeText}`} id='ativos_fiis'>
-                                <thead>
-                                    <th>Ativo</th>
-                                    <th>Valor Ativo</th>
-                                    <th>Valor Aporte</th>
-                                    <th>Mês Aporte</th>
-                                    <th>Ano Aporte</th>
-                                    <th>DY Média Mensal</th>
-                                    <th>Cotas</th>
-                                    <th>Rendimento / Mês</th>
-                                </thead>
-                                <tbody>
-                                    {listAtivos.map((v, i) => {
-                                        return (<tr key={i}>
-                                            <td>{v.ativo}</td>
-                                            <td>{v.valorAtivo}</td>
-                                            <td>{parseFloat(v.valorAporteFixo).toFixed(2)}</td>
-                                            <td>{Meses[v.mes]}</td>
-                                            <td onClick={() => filtrarPorAno(v.ano, v.ativo)}>{v.ano}</td>
-                                            <td>{v.dy}%</td>
-                                            <td>{parseInt(v.valorAporteFixo / v.valorAtivo) || 0}</td>
-                                            <td>R$ {calcYieldByMonth(listAtivos, v.ano, v.mes, v.ativo) || 0}</td>
-                                            </tr>)
-                                    })}
-                                </tbody>
-                            </table>
+                        <div className='table-responsive'>
+                            {listAtivos && <div className="col-12">
+                            
+                                <table className={`table text-${themeText}`} id='ativos_fiis'>
+                                    <thead>
+                                        <th>Ativo</th>
+                                        <th>Valor Ativo</th>
+                                        <th>Valor Aporte</th>
+                                        <th>Mês Aporte</th>
+                                        <th>Ano Aporte</th>
+                                        <th>DY Média Mensal</th>
+                                        <th>Cotas</th>
+                                        <th>Rendimento / Mês</th>
+                                    </thead>
+                                    <tbody>
+                                        {listAtivos.map((v, i) => {
+                                            return (<tr key={i}>
+                                                <td>{v.ativo}</td>
+                                                <td>{v.valorAtivo}</td>
+                                                <td>{parseFloat(v.valorAporteFixo).toFixed(2)}</td>
+                                                <td>{Meses[v.mes]}</td>
+                                                <td onClick={() => filtrarPorAno(v.ano, v.ativo)}>{v.ano}</td>
+                                                <td>{v.dy}%</td>
+                                                <td>{parseInt(v.valorAporteFixo / v.valorAtivo) || 0}</td>
+                                                <td>R$ {calcYieldByMonth(listAtivos, v.ano, v.mes, v.ativo) || 0}</td>
+                                                </tr>)
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                         }
                     </div>
