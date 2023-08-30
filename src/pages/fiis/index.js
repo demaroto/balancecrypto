@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux'
 import HeaderComponent from '../../components/Header.Component';
 import LinkListComponent from '../../components/LinkList.Component';
+import { getAportesByCode, getGroups, setAportes, getAportes, calcYieldByMonth } from '../../services/fiis';
 import { Meses } from '../../utils/meses';
+import  DashboardBlockComponent from '../../components/DashboardBlock.Component';
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     const themeText = theme === 'dark' ? 'light' : 'dark';
@@ -12,9 +14,33 @@ const Index = () => {
     const [ano, setAno] = useState(new Date().getFullYear())
     const [valorAtivo, setValorAtivo] = useState(null)
     const [valorAporte, setValorAporte] = useState(null)
+    const [qtdCotas, setQtdCotas] = useState(0)
     const [dy, setDy] = useState(null)
     const [listAtivos, setListAtivos] = useState([])
+    const [anoSelecionado, setAnoSelecionado] = useState(new Date().getFullYear())
+    const [groups, setGroups] = useState([])
   
+    const changeValorAporte = (qtd) => {
+        setQtdCotas(qtd)
+        setValorAporte(valorAtivo * qtd)
+    }
+
+    const filtrarAtivo = (ativos) => {
+        console.log(ativos)
+        setAnoSelecionado(ativos[0].ano)
+        setListAtivos(ativos)
+    }
+
+    const filtrarPorAno = (ano, title) => {
+        const aportes = getAportes()
+        const result = aportes.filter(a => parseInt(a.ano) === parseInt(ano) && String(a.ativo).toUpperCase() === String(title).toUpperCase())
+        if (result.length > 0) {
+            filtrarAtivo(result)
+        }else{
+            console.log([ano, title], aportes)
+        }
+    }
+
     const addAporte = () => {
         if (Number.parseFloat(valorAporte) < Number.parseFloat(valorAtivo)) {
             alert("Valor do Aporte é Menor que o valor do Ativo");
@@ -22,25 +48,25 @@ const Index = () => {
             return false;
         }
        
-        const getAportes = localStorage.getItem('aportes');
-        const parseAportes = getAportes ? JSON.parse(getAportes) : null;
+        
+        const parseAportes = getAportes() ? getAportes() : null;
 
-        console.log(parseAportes)
-       
         if (parseAportes) {
-            const ultimoRendimento = parseAportes.aportes.filter(aporte => aporte.ativo === ativo)
+            const ultimoRendimento = parseAportes.filter(aporte => aporte.ativo === ativo && parseInt(aporte.ano) === parseInt(ano) && parseInt(aporte.mes) <= parseInt(mes))
             const rendimento = ultimoRendimento.length > 0 ? ultimoRendimento[ultimoRendimento.length - 1] : null
             const aporteAtual = rendimento ? ultimoRendimento[ultimoRendimento.length - 1].valorAporte : 0
             
             const calcRendimento = rendimento ? rendimento.valorAtivo * rendimento.dy / 100 * parseInt(rendimento.valorAporte / rendimento.valorAtivo) : 0
             const novoAporte = parseFloat(valorAporte) + parseFloat(aporteAtual) + calcRendimento
-            parseAportes.aportes.push({ativo, mes, ano, valorAtivo, valorAporte: novoAporte, dy, data: new Date()})
-            localStorage.setItem('aportes', JSON.stringify(parseAportes))
+
+            setAportes({ativo, mes, ano: parseInt(ano), valorAtivo, valorAporte: novoAporte, dy, data: new Date(), valorAporteFixo: valorAporte})
+            
         }else{
-            const aportes = {"aportes": [{ativo, mes, ano, valorAtivo, valorAporte, dy, data: new Date()}]}
-            localStorage.setItem('aportes', JSON.stringify(aportes));
+            setAportes({ativo, mes, ano: parseInt(ano), valorAtivo, valorAporte, dy, data: new Date(), valorAporteFixo: valorAporte})
+           
         }
         mountTable();
+        alert('Aporte inserido com sucesso')
         return true;
     }
 
@@ -48,20 +74,23 @@ const Index = () => {
 
     //Preparar valores para table
     const mountTable = () => {
-        const getAportes = localStorage.getItem('aportes'); 
-
+       
         //Se existir aportes
-        if (getAportes) {
-            const parseAportes = JSON.parse(getAportes);
+        if (getAportes()) {
+       
+            const parseAportes = getAportes().filter(a => a.ano === anoSelecionado);
+        
             
-            const tableValues = parseAportes.aportes.map(v => {
+            const tableValues = parseAportes.map(v => {
                 return v
             }) 
+            
 
             setListAtivos(tableValues)
         }
         
     }
+
 
     const clearAllListeners = () => {
         localStorage.removeItem('aportes')
@@ -71,7 +100,11 @@ const Index = () => {
 
     useEffect(() => {
         mountTable();
-    }, []);
+        
+        setGroups(getGroups())
+        console.log(groups)
+        
+    }, [anoSelecionado]);
 
 
     return (
@@ -87,7 +120,7 @@ const Index = () => {
                         <div className={`input-group-prepend w-100 mt-1`}>
                             <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Sigla Ativo'}</span>
                         </div>
-                        <input id="me" className="form-control"  type="text" placeholder='Sigla Ativo' value={ativo} onChange={(e) => setAtivo(e.target.value)} /> 
+                        <input id="me" className="form-control"  type="text" placeholder='Sigla Ativo' value={ativo} onChange={(e) => setAtivo(String(e.target.value).toUpperCase())} /> 
                     </div>
                     <div className="col-12 col-md-6">
                         <div className={`input-group-prepend w-100 mt-1`}>
@@ -123,9 +156,9 @@ const Index = () => {
                     </div>
                     <div className="col-12 col-md-6">
                         <div className={`input-group-prepend w-100 mt-1`}>
-                            <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Valor do Aporte'}</span>
+                            <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Quantidade de Cotas'}</span>
                         </div>
-                        <input id="me" className="form-control"  type="number" min={0.1} placeholder='10.30' value={valorAporte} onChange={(e) => setValorAporte(e.target.value)} /> 
+                        <input id="meqtd" className="form-control"  type="number" min={1} placeholder='2' value={qtdCotas} onChange={(e) => changeValorAporte(e.target.value)} /> 
                     </div>
                     <div className="col-12 col-md-6">
                         <div className={`input-group-prepend w-100 mt-1`}>
@@ -140,8 +173,17 @@ const Index = () => {
                 </div>
                 
                 <div className='container-fluid'>
+                   
+                   
                     <div className="row">
-                        <div className="col-12 col-md-12">
+                        <div className='row mb-2'>
+                            {
+                            anoSelecionado && groups.map((a, i) => {
+                                return <div key={i} className='col-3 mb-1'><DashboardBlockComponent title={a} ano={anoSelecionado} fiis={getAportesByCode(a)} filtrar={filtrarAtivo} filtrarPorAno={filtrarPorAno}></DashboardBlockComponent></div>
+                                })
+                            }
+                        </div>
+                        {listAtivos && <div className="col-12">
                            
                             <table className={`table text-${themeText}`} id='ativos_fiis'>
                                 <thead>
@@ -159,17 +201,18 @@ const Index = () => {
                                         return (<tr key={i}>
                                             <td>{v.ativo}</td>
                                             <td>{v.valorAtivo}</td>
-                                            <td>{parseFloat(v.valorAporte).toFixed(2)}</td>
+                                            <td>{parseFloat(v.valorAporteFixo).toFixed(2)}</td>
                                             <td>{Meses[v.mes]}</td>
-                                            <td>{v.ano}</td>
+                                            <td onClick={() => filtrarPorAno(v.ano, v.ativo)}>{v.ano}</td>
                                             <td>{v.dy}%</td>
-                                            <td>{parseInt(v.valorAporte / v.valorAtivo) || 0}</td>
-                                            <td>R$ {parseFloat(((v.valorAtivo * v.dy) / 100) * parseInt(v.valorAporte / v.valorAtivo)).toFixed(2) || 0}</td>
+                                            <td>{parseInt(v.valorAporteFixo / v.valorAtivo) || 0}</td>
+                                            <td>R$ {calcYieldByMonth(listAtivos, v.ano, v.mes, v.ativo) || 0}</td>
                                             </tr>)
                                     })}
                                 </tbody>
                             </table>
                         </div>
+                        }
                     </div>
                     
                 </div>
