@@ -53,7 +53,7 @@ const DashboardBlockComponent = (props) => {
     }, [props]);
 
     return (
-        exists && <div className="card" style={{width: "18rem"}}>
+        exists && <div className="card">
             <div className="card-body">
                 <div style={{cursor: "pointer"}} onClick={() => props.filtrar(filterByYear())}>
                     <h5 className="card-title">{String(props.title).toUpperCase()}</h5>

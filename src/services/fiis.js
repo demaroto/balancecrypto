@@ -44,6 +44,7 @@ const getAportesByCode = (code) => {
             if (aporte.ativo === code) {
                 results.push(aporte);
             }
+            return true
         })
     }
 
@@ -59,6 +60,7 @@ const getGroups = () => {
             if (!results.includes(aporte.ativo)) {
                 results.push(aporte.ativo);
             }
+            return true
         })
     }
     console.log(results)

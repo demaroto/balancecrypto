@@ -172,14 +172,12 @@ const Index = () => {
                     </div>
                 </div>
                 
-                <div className='container-fluid'>
+                <div className="container-fluid">
                    
-                   
-                    <div className="row">
-                        <div className='row mb-2'>
+                        <div className='row mb-2 mt-2'>
                             {
                             anoSelecionado && groups.map((a, i) => {
-                                return <div key={i} className='col-3 mb-1'><DashboardBlockComponent title={a} ano={anoSelecionado} fiis={getAportesByCode(a)} filtrar={filtrarAtivo} filtrarPorAno={filtrarPorAno}></DashboardBlockComponent></div>
+                                return <div key={i} className='col-md-3 col-sm-12 mb-1'><DashboardBlockComponent title={a} ano={anoSelecionado} fiis={getAportesByCode(a)} filtrar={filtrarAtivo} filtrarPorAno={filtrarPorAno}></DashboardBlockComponent></div>
                                 })
                             }
                         </div>
@@ -214,7 +212,7 @@ const Index = () => {
                                 </table>
                             </div>
 
-                        </div>
+                        
                         }
                     </div>
                     
