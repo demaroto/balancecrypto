@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux'
 import HeaderComponent from '../../components/Header.Component';
 import LinkListComponent from '../../components/LinkList.Component';
-import { getAportesByCode, getGroups, setAportes, getAportes, calcYieldByMonth } from '../../services/fiis';
+import { getAportesByCode, getGroups, setAportes, getAportes, calcYieldByMonth, deleteAporte } from '../../services/fiis';
 import { Meses } from '../../utils/meses';
 import  DashboardBlockComponent from '../../components/DashboardBlock.Component';
 const Index = () => {
@@ -23,6 +23,11 @@ const Index = () => {
     const changeValorAporte = (qtd) => {
         setQtdCotas(qtd)
         setValorAporte(valorAtivo * qtd)
+    }
+
+    const removeAporte = (id) => {
+        let updated = deleteAporte(id)
+        setListAtivos(updated)
     }
 
     const filtrarAtivo = (ativos) => {
@@ -194,6 +199,7 @@ const Index = () => {
                                         <th>DY Média Mensal</th>
                                         <th>Cotas</th>
                                         <th>Rendimento / Mês</th>
+                                        <th></th>
                                     </thead>
                                     <tbody>
                                         {listAtivos.map((v, i) => {
@@ -206,6 +212,7 @@ const Index = () => {
                                                 <td>{v.dy}%</td>
                                                 <td>{parseInt(v.valorAporteFixo / v.valorAtivo) || 0}</td>
                                                 <td>R$ {calcYieldByMonth(listAtivos, v.ano, v.mes, v.ativo) || 0}</td>
+                                                <td>{<button className='btn bg-danger text-light' onClick={() => removeAporte(v.id)}>Remover Aporte</button>}</td>
                                                 </tr>)
                                         })}
                                     </tbody>

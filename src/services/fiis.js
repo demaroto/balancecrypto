@@ -71,6 +71,7 @@ const setAportes = (obj) => {
     const aportes = getAportes();
     const result = aportes;
     const objAportes = {'aportes' : []}
+    obj.id = Math.random().toString(16).slice(2)
     if (result.length > 0) {
         result.push(obj)
         objAportes.aportes = result
@@ -82,5 +83,15 @@ const setAportes = (obj) => {
 }
 
 
+const deleteAporte = id => {
+    const aportes = getAportes()
+    const deleted = aportes.filter(a => a.id !== id)
+    const obj = {}
+    obj.aportes = deleted
+    localStorage.setItem('aportes', JSON.stringify(obj));
+    return deleted
+} 
 
-export { calcYield, getAportes, getAportesByCode, getGroups, setAportes, calcYieldByMonth }
+
+
+export { calcYield, getAportes, getAportesByCode, getGroups, setAportes, calcYieldByMonth, deleteAporte }
