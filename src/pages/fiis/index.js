@@ -210,8 +210,8 @@ const Index = () => {
                                                 <td>{Meses[v.mes]}</td>
                                                 <td onClick={() => filtrarPorAno(v.ano, v.ativo)}>{v.ano}</td>
                                                 <td>{v.dy}%</td>
-                                                <td>{parseInt(v.valorAporteFixo / v.valorAtivo) || 0}</td>
-                                                <td>R$ {calcYieldByMonth(listAtivos, v.ano, v.mes, v.ativo) || 0}</td>
+                                                <td>{calcYieldByMonth(v.ano, v.mes, v.ativo).cotas}</td>
+                                                <td>R$ {calcYieldByMonth(v.ano, v.mes, v.ativo).yield}</td>
                                                 <td>{<button className='btn bg-danger text-light' onClick={() => removeAporte(v.id)}>Remover Aporte</button>}</td>
                                                 </tr>)
                                         })}

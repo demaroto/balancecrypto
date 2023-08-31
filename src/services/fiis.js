@@ -19,18 +19,35 @@ const calcYield = (valorAtivo, dy, cotas) => {
 
 }
 
-const calcYieldByMonth = (ativo, ano, mes, sigla) => {
+const calcYieldByMonth = (ano, mes, sigla) => {
 
-    console.log(getAportes())
-    const fiis = getAportes().filter(fi => parseInt(fi.ano) === ano && String(fi.ativo).toUpperCase() === String(sigla).toUpperCase() && parseInt(fi.mes) <= parseInt(mes))
+    
+    const fiis = getAportes().filter(fi => {
+        if (parseInt(fi.ano) === ano && String(fi.ativo).toUpperCase() === String(sigla).toUpperCase() && parseInt(fi.mes) <= parseInt(mes)) {
+            return true;
+        }
+
+        if (parseInt(fi.ano) < ano && String(fi.ativo).toUpperCase() === String(sigla).toUpperCase()){
+            return true;
+        }
+        return false;
+        
+    })
+    const obj = {cotas: 0, yield: 0.00, investimentos: 0.00}
     if (fiis.length) {
-        return parseFloat(fiis.reduce((acc, fi) => {
+        obj.yield = parseFloat(fiis.reduce((acc, fi) => {
             return acc + (fi.valorAtivo * fi.dy / 100) * parseInt(fi.valorAporteFixo / fi.valorAtivo)
         }, 0)).toFixed(2)
-    }else{
-        console.log(fiis)
-        return 100
+
+        obj.cotas = parseInt(fiis.reduce((acc, fi) => {
+            return acc + parseInt(fi.valorAporteFixo / fi.valorAtivo)
+        },0))
+
+        obj.investimentos = parseFloat(fiis.reduce((acc, f) => acc + (f.valorAtivo * parseInt(f.valorAporteFixo / f.valorAtivo)), 0))
+
     }
+
+    return obj
 
 }
 

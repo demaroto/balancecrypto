@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import { calcYield } from './../services/fiis';
+import { calcYieldByMonth } from './../services/fiis';
 import { realCurrency } from '../utils/usCurrency';
 import { getAportes } from './../services/fiis';
 
@@ -21,7 +21,7 @@ const DashboardBlockComponent = (props) => {
 
     const filterByTitle = () => {
         const aportes = getAportes()
-        console.log(aportes)
+       
         const result = aportes.filter(a => String(a.ativo).toUpperCase() === String(props.title).toUpperCase())
         return result
     }
@@ -29,21 +29,17 @@ const DashboardBlockComponent = (props) => {
     const totais = () => {
        
         const fiis = getAportes().filter(f => f.ano === parseInt(props.ano) && f.ativo === props.title)
-        const prov = fiis.sort((a,b) => parseInt(b.mes) - parseInt(a.mes))
         const precos = fiis.reduce((acc, f) => acc + parseFloat(f.valorAtivo), 0)
-        const totalInvestido = fiis.reduce((acc, f) => acc + (f.valorAtivo * parseInt(f.valorAporteFixo / f.valorAtivo)), 0)
-        console.log(fiis)
+  
         fiis.length > 0 ? setExists(true) : setExists(false)
         
         if ( fiis.length > 0) {
-            setInvestimento(parseFloat(totalInvestido))
             setPrecoMedio(parseFloat(precos) / fiis.length)
 
-            const ultimoValorAtivo = parseFloat(prov[0].valorAtivo)
-            const ultimoDivendYield = parseFloat(prov[0].dy)
-            const ultimoQtdCotas = prov.reduce((acc,f) => acc + (parseInt(f.valorAporteFixo / f.valorAtivo)), 0)
-           setCotas(ultimoQtdCotas)
-            setProventos(parseFloat(calcYield(ultimoValorAtivo, ultimoDivendYield, ultimoQtdCotas)))
+            const calculated = calcYieldByMonth(props.ano, 12, props.title)
+            setInvestimento(parseFloat(calculated.investimentos))
+           setCotas(calculated.cotas)
+            setProventos(parseFloat(calculated.yield))
         }
     }
 
