@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import HeaderComponent from '../../components/Header.Component';
 import LinkListComponent from '../../components/LinkList.Component';
 import { getAportesByCode, getGroups, setAportes, getAportes, calcYieldByMonth, deleteAporte } from '../../services/fiis';
+import { Plus, Trash } from 'react-bootstrap-icons';
 import { Meses } from '../../utils/meses';
 import  DashboardBlockComponent from '../../components/DashboardBlock.Component';
 const Index = () => {
@@ -19,6 +20,7 @@ const Index = () => {
     const [listAtivos, setListAtivos] = useState([])
     const [anoSelecionado, setAnoSelecionado] = useState(new Date().getFullYear())
     const [groups, setGroups] = useState([])
+    const [formVisible, setFormVisible] = useState(false)
   
     const changeValorAporte = (qtd) => {
         setQtdCotas(qtd)
@@ -26,6 +28,8 @@ const Index = () => {
     }
 
     const removeAporte = (id) => {
+        let r = window.confirm('Deseja remover este aporte ?')
+        if (r === false) return
         let updated = deleteAporte(id)
         setListAtivos(updated)
     }
@@ -47,6 +51,10 @@ const Index = () => {
     }
 
     const addAporte = () => {
+        if (!formVisible) {
+            setFormVisible(true)
+            return
+        }
         if (Number.parseFloat(valorAporte) < Number.parseFloat(valorAtivo)) {
             alert("Valor do Aporte é Menor que o valor do Ativo");
             console.log(valorAtivo, valorAporte);
@@ -72,6 +80,9 @@ const Index = () => {
         }
         mountTable();
         alert('Aporte inserido com sucesso')
+        if (formVisible) {
+            setFormVisible(false)
+        }
         return true;
     }
 
@@ -98,6 +109,8 @@ const Index = () => {
 
 
     const clearAllListeners = () => {
+        let r = window.confirm('Deseja apagar todos os aportes ?')
+        if (r === false) return
         localStorage.removeItem('aportes')
         setListAtivos([])
         mountTable()
@@ -117,10 +130,8 @@ const Index = () => {
             <HeaderComponent />
             <LinkListComponent />
             <main className={[theme, "container", "h-100", `bg-${theme}`].join(" ")}>
-                <div className="row">
-                    <div className='col-12 mt-2 mb-2 d-flex justify-content-end'>
-                        <button className={`btn bg-danger text-white`} type='button' onClick={() => clearAllListeners()} >Limpar</button>
-                    </div>
+                 {formVisible && <div className="row">
+                    
                     <div className="col-12 col-md-6">
                         <div className={`input-group-prepend w-100 mt-1`}>
                             <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Sigla Ativo'}</span>
@@ -171,15 +182,17 @@ const Index = () => {
                         </div>
                         <input id="me" className="form-control"  type="number" min={0.1} placeholder='10.30' value={dy} onChange={(e) => setDy(e.target.value)} /> 
                     </div>
-                    <div className="col-12 mt-1 d-flex justify-content-end" >
-                        <button className='btn btn-success text-white' onClick={() => addAporte()}>Adicionar Aportes</button>
-
-                    </div>
-                </div>
+                    
+                </div>}
                 
                 <div className="container-fluid">
-                   
+                    <div className="col-12 mt-1 d-flex justify-content-end" >
+                        <button className='btn btn-outline-success text-white' onClick={() => addAporte()}><Plus /> Adicionar Aportes</button>
+                        <button className={`btn btn-outline-danger text-white ms-1`} type='button' onClick={() => clearAllListeners()} ><Trash /> Apagar Todos</button>
+
+                    </div>
                         <div className='row mb-2 mt-2'>
+                            {groups.length > 0 ? <h3 className={`text-${themeText}`}>Aportes Realizados</h3> : ''}
                             {
                             anoSelecionado && groups.map((a, i) => {
                                 return <div key={i} className='col-md-3 col-sm-12 mb-1'><DashboardBlockComponent title={a} ano={anoSelecionado} fiis={getAportesByCode(a)} filtrar={filtrarAtivo} filtrarPorAno={filtrarPorAno}></DashboardBlockComponent></div>
@@ -212,7 +225,7 @@ const Index = () => {
                                                 <td>{v.dy}%</td>
                                                 <td>{calcYieldByMonth(v.ano, v.mes, v.ativo).cotas}</td>
                                                 <td>R$ {calcYieldByMonth(v.ano, v.mes, v.ativo).yield}</td>
-                                                <td>{<button className='btn bg-danger text-light' onClick={() => removeAporte(v.id)}>Remover Aporte</button>}</td>
+                                                <td>{<button className='btn bg-danger text-light' onClick={() => removeAporte(v.id)}><Trash /></button>}</td>
                                                 </tr>)
                                         })}
                                     </tbody>
