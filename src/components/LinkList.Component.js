@@ -20,7 +20,7 @@ const LinkListComponent = () => {
                        
                         <li class="nav-item dropdown">
                         <a className={`btn bg-success link-light nav-link dropdown-toggle text-white`} href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Investimentos
+                            Meus Investimentos
                         </a>
                         <ul className={"dropdown-menu bg-success"} aria-labelledby="navbarDropdownMenuLink">
                             <li><Link to={`/`} className='btn text-white'>Crypto</Link></li>

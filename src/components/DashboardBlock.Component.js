@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { calcYieldByMonth } from './../services/fiis';
 import { realCurrency } from '../utils/usCurrency';
 import { getAportes } from './../services/fiis';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardBlockComponent = (props) => {
 
@@ -11,6 +12,7 @@ const DashboardBlockComponent = (props) => {
     const [proventos, setProventos] = useState(0)
     const [cotas, setCotas] = useState(0)
     const [exists, setExists] = useState(false)
+    const navigation = useNavigate()
 
     const filterByYear = () => {
         const aportes = getAportes()
@@ -18,12 +20,8 @@ const DashboardBlockComponent = (props) => {
         return result
     }
 
-
-    const filterByTitle = () => {
-        const aportes = getAportes()
-       
-        const result = aportes.filter(a => String(a.ativo).toUpperCase() === String(props.title).toUpperCase())
-        return result
+    const detalhesAtivo = (title) => {
+        navigation(`detalhes/${title}`)
     }
 
     const totais = () => {
@@ -61,7 +59,7 @@ const DashboardBlockComponent = (props) => {
                 <p className="card-text">Qtd. Cotas: <strong>{(cotas)}</strong></p>
                 <div className='row'>
                     <div className='col-md-6 col-sm-12'>
-                        <button className="btn bg-primary text-light" onClick={() => props.filtrar(filterByTitle())}>Detalhes</button>
+                        <button className="btn bg-primary text-light" onClick={() => detalhesAtivo(props.title)}>Detalhes</button>
                     </div>
                     <div className='col-md-6 col-sm-12'>
                         <select className="form-control" onChange={(e) => props.filtrarPorAno(e.target.value,props.title)}>

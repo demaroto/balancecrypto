@@ -6,6 +6,7 @@ import { getAportesByCode, getGroups, setAportes, getAportes, calcYieldByMonth, 
 import { Plus, Trash } from 'react-bootstrap-icons';
 import { Meses } from '../../utils/meses';
 import  DashboardBlockComponent from '../../components/DashboardBlock.Component';
+
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     const themeText = theme === 'dark' ? 'light' : 'dark';
@@ -21,6 +22,7 @@ const Index = () => {
     const [anoSelecionado, setAnoSelecionado] = useState(new Date().getFullYear())
     const [groups, setGroups] = useState([])
     const [formVisible, setFormVisible] = useState(false)
+
   
     const changeValorAporte = (qtd) => {
         setQtdCotas(qtd)
@@ -51,10 +53,7 @@ const Index = () => {
     }
 
     const addAporte = () => {
-        if (!formVisible) {
-            setFormVisible(true)
-            return
-        }
+       
         if (Number.parseFloat(valorAporte) < Number.parseFloat(valorAtivo)) {
             alert("Valor do Aporte é Menor que o valor do Ativo");
             console.log(valorAtivo, valorAporte);
@@ -79,7 +78,7 @@ const Index = () => {
            
         }
         mountTable();
-        alert('Aporte inserido com sucesso')
+        
         if (formVisible) {
             setFormVisible(false)
         }
@@ -130,65 +129,13 @@ const Index = () => {
             <HeaderComponent />
             <LinkListComponent />
             <main className={[theme, "container", "h-100", `bg-${theme}`].join(" ")}>
-                 {formVisible && <div className="row">
-                    
-                    <div className="col-12 col-md-6">
-                        <div className={`input-group-prepend w-100 mt-1`}>
-                            <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Sigla Ativo'}</span>
-                        </div>
-                        <input id="me" className="form-control"  type="text" placeholder='Sigla Ativo' value={ativo} onChange={(e) => setAtivo(String(e.target.value).toUpperCase())} /> 
-                    </div>
-                    <div className="col-12 col-md-6">
-                        <div className={`input-group-prepend w-100 mt-1`}>
-                            <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Mês'}</span>
-                        </div>
-                        <select className="form-control" onChange={(e) => setMes(e.target.value)}>
-                            <option value="">{'Mês'}</option>
-                            <option value="1">Janeiro</option>
-                            <option value="2">Fevereiro</option>
-                            <option value="3">Março</option>
-                            <option value="4">Abril</option>
-                            <option value="5">Maio</option>
-                            <option value="6">Junho</option>
-                            <option value="7">Julho</option>
-                            <option value="8">Agosto</option>
-                            <option value="9">Setembro</option>
-                            <option value="10">Outubro</option>
-                            <option value="11">Novembro</option>
-                            <option value="12">Dezembro</option>
-                        </select>
-                    </div>
-                    <div className="col-12 col-md-6">
-                        <div className={`input-group-prepend w-100 mt-1`}>
-                            <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Ano'}</span>
-                        </div>
-                        <input id="me" className="form-control"  type="number" min={1} placeholder='2023' value={ano} onChange={(e) => setAno(e.target.value)} /> 
-                    </div>
-                    <div className="col-12 col-md-6">
-                        <div className={`input-group-prepend w-100 mt-1`}>
-                            <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Valor do Ativo'}</span>
-                        </div>
-                        <input id="me" className="form-control"  type="number" min={0.1} placeholder='10.30' value={valorAtivo} onChange={(e) => setValorAtivo(e.target.value)} /> 
-                    </div>
-                    <div className="col-12 col-md-6">
-                        <div className={`input-group-prepend w-100 mt-1`}>
-                            <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Quantidade de Cotas'}</span>
-                        </div>
-                        <input id="meqtd" className="form-control"  type="number" min={1} placeholder='2' value={qtdCotas} onChange={(e) => changeValorAporte(e.target.value)} /> 
-                    </div>
-                    <div className="col-12 col-md-6">
-                        <div className={`input-group-prepend w-100 mt-1`}>
-                            <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'DY Médio Mensal'}</span>
-                        </div>
-                        <input id="me" className="form-control"  type="number" min={0.1} placeholder='10.30' value={dy} onChange={(e) => setDy(e.target.value)} /> 
-                    </div>
-                    
-                </div>}
+                
+                 
                 
                 <div className="container-fluid">
                     <div className="col-12 mt-1 d-flex justify-content-end" >
-                        <button className='btn btn-outline-success text-white' onClick={() => addAporte()}><Plus /> Adicionar Aportes</button>
-                        <button className={`btn btn-outline-danger text-white ms-1`} type='button' onClick={() => clearAllListeners()} ><Trash /> Apagar Todos</button>
+                        <button className={`btn btn-outline-success text-${themeText}`} data-bs-toggle="modal" data-bs-target="#formAdd"><Plus /> Adicionar Aportes</button>
+                        <button className={`btn btn-outline-danger text-${themeText} ms-1`} type='button' onClick={() => clearAllListeners()} ><Trash /> Apagar Todos</button>
 
                     </div>
                         <div className='row mb-2 mt-2'>
@@ -238,6 +185,76 @@ const Index = () => {
                     
                 </div>
             </main>
+            <div className={`modal fade`} tabindex="-1" id="formAdd">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">Adicionar Aporte</h5>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div className="modal-body">
+                        <div className="row">
+                        
+                        <div className="col-12 col-md-6">
+                            <div className={`input-group-prepend w-100 mt-1`}>
+                                <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Sigla Ativo'}</span>
+                            </div>
+                            <input id="me" className="form-control"  type="text" placeholder='Sigla Ativo' value={ativo} onChange={(e) => setAtivo(String(e.target.value).toUpperCase())} /> 
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <div className={`input-group-prepend w-100 mt-1`}>
+                                <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Mês'}</span>
+                            </div>
+                            <select className="form-control" onChange={(e) => setMes(e.target.value)}>
+                                <option value="">{'Mês'}</option>
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <div className={`input-group-prepend w-100 mt-1`}>
+                                <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Ano'}</span>
+                            </div>
+                            <input id="me" className="form-control"  type="number" min={1} placeholder='2023' value={ano} onChange={(e) => setAno(e.target.value)} /> 
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <div className={`input-group-prepend w-100 mt-1`}>
+                                <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Valor do Ativo'}</span>
+                            </div>
+                            <input id="me" className="form-control"  type="number" min={0.1} placeholder='10.30' value={valorAtivo} onChange={(e) => setValorAtivo(e.target.value)} /> 
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <div className={`input-group-prepend w-100 mt-1`}>
+                                <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'Quantidade de Cotas'}</span>
+                            </div>
+                            <input id="meqtd" className="form-control"  type="number" min={1} placeholder='2' value={qtdCotas} onChange={(e) => changeValorAporte(e.target.value)} /> 
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <div className={`input-group-prepend w-100 mt-1`}>
+                                <span className={`input-group-text bg-${theme} text-${themeText}`} style={{borderBottom:"0"}}>{'DY Médio Mensal'}</span>
+                            </div>
+                            <input id="me" className="form-control"  type="number" min={0.1} placeholder='10.30' value={dy} onChange={(e) => setDy(e.target.value)} /> 
+                        </div>
+                        
+                    </div>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" className="btn btn-success" data-bs-dismiss="modal" aria-label="Close" onClick={() => addAporte()}>Salvar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
