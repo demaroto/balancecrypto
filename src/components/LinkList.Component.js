@@ -10,15 +10,15 @@ const LinkListComponent = () => {
     return (
         <div>
             <nav className={`navbar navbar-expand-lg navbar-light border-bottom-${theme} bg-${theme}`}>
-                <div class="container-fluid">
+                <div className="container-fluid">
                     
-                    <button class="navbar-toggler btn bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <button className="navbar-toggler btn bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
+                    <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul className="navbar-nav">
                        
-                        <li class="nav-item dropdown">
+                        <li className="nav-item dropdown">
                         <a className={`btn bg-success link-light nav-link dropdown-toggle text-white`} href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Meus Investimentos
                         </a>

@@ -33,6 +33,8 @@ const calcYieldByMonth = (ano, mes, sigla) => {
         return false;
         
     })
+
+    
     const obj = {cotas: 0, yield: 0.00, investimentos: 0.00}
     if (fiis.length) {
         obj.yield = parseFloat(fiis.reduce((acc, fi) => {
@@ -59,6 +61,23 @@ const getAportesByCode = (code) => {
     if (result.length > 0) {
         result.map(aporte => {
             if (aporte.ativo === code) {
+                results.push(aporte);
+            }
+            return true
+        })
+    }
+
+    return results
+ }
+
+ const getAportesById = (code) => {
+    const aportes = getAportes();
+    const result = aportes ? aportes : null;
+    const results = [];
+    
+    if (result.length > 0) {
+        result.map(aporte => {
+            if (aporte.id === code) {
                 results.push(aporte);
             }
             return true
@@ -111,4 +130,4 @@ const deleteAporte = id => {
 
 
 
-export { calcYield, getAportes, getAportesByCode, getGroups, setAportes, calcYieldByMonth, deleteAporte }
+export { calcYield, getAportes, getAportesByCode, getGroups, setAportes, calcYieldByMonth, deleteAporte, getAportesById }
