@@ -21,10 +21,11 @@ const ThemeSwitcher = () => {
     };
   }, [theme, themeClass, cssBackground]);
   return (
-       
-        <button className={`text-capitalize btn btn-${theme} btn-lg"`} type="button" onClick={() => dispatch(changeTheme(themeClass))}>
-          {theme ? theme === 'light' ? <MoonStars /> : <SunFill /> : "Choose Theme"}
+    <div class="d-grid gap-2">
+        <button className={`text-capitalize btn text-${themeClass} btn-lg"`} type="button" onClick={() => dispatch(changeTheme(themeClass))}>
+          {theme ? theme === 'light' ? <span><MoonStars /> Noite</span> : <span><SunFill /> Dia</span> : "Choose Theme"}
         </button>   
+    </div>
      
       );
 };

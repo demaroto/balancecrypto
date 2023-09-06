@@ -80,7 +80,6 @@ const Index = () => {
 
     return (
         <div className='h-100'>
-            <HeaderComponent />
             <LinkListComponent />
             <main className={[theme, "container", "h-100", `bg-${theme}`].join(" ")}>
                 
