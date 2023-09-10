@@ -10,7 +10,7 @@ const QuadoNumeros = ({inicio, fim, retornar, classesQuadro, classesNumero}) => 
     }
     return (
         <div className={`${classesQuadro}`}>
-            {renderizaQuadro().map(i => <div className={`${classesNumero}`} onClick={(e) => retornar(i)}>{i}</div>)}
+            {renderizaQuadro().map(i => <div className={`${classesNumero}`} key={i} style={{cursor: 'pointer'}} onClick={(e) => retornar(i)}>{i}</div>)}
         </div>
     );
 }

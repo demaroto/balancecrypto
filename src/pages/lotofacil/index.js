@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import QuadoNumeros from '../../components/QuadoNumeros';
+import Numeros from '../../components/NumerosSelecionados';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -9,21 +10,23 @@ const Index = () => {
     const [numerosSelecionados, setNumerosSelecionados] = useState([])
 
     const changeNumerosSelecionados = (numero) => {
+            
         if (numerosSelecionados.includes(numero)) {
-            let numeros = numerosSelecionados
-            let pos = numeros.indexOf(numero)
-            numeros.slice(pos, 1)
+            let res = numerosSelecionados.filter(n => numero !== n)
+            
+            setNumerosSelecionados(res.sort((a,b) => a - b))
+            
         }else{
             let numeros = numerosSelecionados
             numeros.push(numero)
-            setNumerosSelecionados(numeros)
+            setNumerosSelecionados(numeros.sort((a,b) => a - b))
+            
         }
-        console.log(numerosSelecionados)
+
+        
+
     }
 
-    useEffect(() => {
-        
-    }, [numerosSelecionados]);
     return (
         <div className='h-100'>
             <LinkListComponent />
@@ -43,7 +46,10 @@ const Index = () => {
 
                         </div>
                     </div>
-                    <div className={`col text-${themeText} `}>{numerosSelecionados.map(s => s)}</div>
+                </div>
+                <div className='row'>
+                    <h4 className={`text-${themeText}`}>Números Selecionados</h4>
+                    <Numeros numeros={numerosSelecionados} />
                 </div>
                 <div className='row'>
                     <table className={`table table-${theme} table-striped`}>
