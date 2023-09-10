@@ -17,6 +17,10 @@ const Index = () => {
                     </div>
                     <div className='col-md-6 col-sm-12'>
                         <span className={`text-${themeText}`}>Números Selecionados</span>
+                        <div>
+                            <span className={`text-${themeText}`}>Pares: 0 / Ímpares: 0</span>
+
+                        </div>
                     </div>
                 </div>
                 <div className='row'>
