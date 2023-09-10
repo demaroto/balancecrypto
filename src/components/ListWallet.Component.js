@@ -68,7 +68,7 @@ const ListWalletComponent = () => {
                 prices.then(c => {
                     const newPrices = parseFollow.map(f => {
                         let priceCoinGecko = c.filter(coinGecko => f.id === coinGecko.id)
-                        if (f.id === priceCoinGecko[0].id){
+                        if (priceCoinGecko.length && f.id === priceCoinGecko[0].id){
                             let priceUpdated = f.current_price !== priceCoinGecko[0].current_price
                             return {balance: f.balance, coin: f.coin, current_price: priceCoinGecko[0].current_price, id: f.id, image: f.image, name: f.name, updated: priceUpdated}
                         }
