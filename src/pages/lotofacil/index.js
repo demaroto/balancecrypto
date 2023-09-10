@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
+import QuadoNumeros from '../../components/QuadoNumeros';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     const themeText = theme === 'dark' ? 'light' : 'dark';
+    const [numerosSelecionados, setNumerosSelecionados] = useState([])
 
+    const changeNumerosSelecionados = (numero) => {
+        if (numerosSelecionados.includes(numero)) {
+            let numeros = numerosSelecionados
+            let pos = numeros.indexOf(numero)
+            numeros.slice(pos, 1)
+        }else{
+            let numeros = numerosSelecionados
+            numeros.push(numero)
+            setNumerosSelecionados(numeros)
+        }
+        console.log(numerosSelecionados)
+    }
+
+    useEffect(() => {
+        
+    }, [numerosSelecionados]);
     return (
         <div className='h-100'>
             <LinkListComponent />
@@ -13,15 +31,19 @@ const Index = () => {
                 <h1 className={`text-${themeText}`}>Lotofácil</h1>
                 <div className='row'>
                     <div className='col-md-6 col-sm-12'>
-                        <span className={`text-${themeText}`}>Quadro dos números</span>
+                        <QuadoNumeros inicio={1} fim={5} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`bg-${themeText} text-${theme} p-2 mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={6} fim={10} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`bg-${themeText} text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={11} fim={15} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`bg-${themeText} text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={16} fim={20} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`bg-${themeText} text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={21} fim={25} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`bg-${themeText} text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
                     </div>
                     <div className='col-md-6 col-sm-12'>
-                        <span className={`text-${themeText}`}>Números Selecionados</span>
                         <div>
                             <span className={`text-${themeText}`}>Pares: 0 / Ímpares: 0</span>
 
                         </div>
                     </div>
+                    <div className={`col text-${themeText} `}>{numerosSelecionados.map(s => s)}</div>
                 </div>
                 <div className='row'>
                     <table className={`table table-${theme} table-striped`}>
