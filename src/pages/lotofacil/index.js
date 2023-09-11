@@ -67,8 +67,8 @@ const Index = () => {
                         <QuadoNumeros inicio={21} fim={25} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
                     </div>
                     <div className='col-md-6 col-sm-12'>
-                        <div>
-                            <span className={`text-${themeText}`}>Pares: {pares} / Ímpares: {impares}</span>
+                        <div className='text-center'>
+                            <span className={`text-${themeText} h4`}>Pares: {pares} / Ímpares: {impares}</span>
 
                         </div>
                     </div>
