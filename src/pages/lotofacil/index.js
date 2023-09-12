@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import QuadoNumeros from '../../components/QuadoNumeros';
-import { setNumeros, getNumeros } from '../../services/lotofacil';
-
+import { setNumeros, getNumeros, setNumeroFixo } from '../../services/lotofacil';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -11,27 +10,39 @@ const Index = () => {
     const [impares, setImpares] = useState(0)
     const [pares, setPares] = useState(0)
 
-    const changeNumerosSelecionados = (numero) => {
-           
+    const changeNumerosSelecionados = (numero, fixo) => {
         const nums = getNumeros()
-        if (nums.includes(numero)) {
-            let res = nums.filter(n => numero !== n)
-            
-            setNumeros(res.sort((a,b) => a - b))
-            
+           
+        if (fixo && nums.includes(numero)) {
+            setNumeroFixo([fixo])
+            changeImpares() 
         }else{
-            let numeros = nums
-            numeros.push(numero)
-            setNumeros(numeros.sort((a,b) => a - b))
-         
+            if (nums.includes(numero)) {
+                let res = nums.filter(n => numero !== n)
+                
+                setNumeros(res.sort((a,b) => a - b))
+                changeImpares() 
+                
+            }else{
+                if (nums.length < 18) {
+                    let numeros = nums
+                    numeros.push(numero)
+                    setNumeros(numeros.sort((a,b) => a - b))
+                    changeImpares() 
+                }else{
+                    alert("Número máximo já selecionado!")
+                }
+             
+            }
+
         }
-        changeImpares() 
+       
 
     }
 
     const changeImpares = () => {
         const nums = getNumeros()
-        if (nums.length > 0){
+        if (nums.length > 0 && nums.length <= 18){
             //Impares
            const ip = nums.filter(num => {
                 return num % 2 === 1
@@ -44,8 +55,10 @@ const Index = () => {
             setPares(pa.length)
             setImpares(ip.length)
         }else{
+            if(nums.length === 0){
             setPares(0)
             setImpares(0)
+            }
         }
     }
 
@@ -60,11 +73,11 @@ const Index = () => {
                 <h1 className={`text-${themeText}`}>Lotofácil</h1>
                 <div className='row'>
                     <div className='col-md-6 col-sm-12'>
-                        <QuadoNumeros inicio={1} fim={5} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
-                        <QuadoNumeros inicio={6} fim={10} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
-                        <QuadoNumeros inicio={11} fim={15} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
-                        <QuadoNumeros inicio={16} fim={20} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
-                        <QuadoNumeros inicio={21} fim={25} retornar={(num) => changeNumerosSelecionados(num)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={1} fim={5} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={6} fim={10} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={11} fim={15} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={16} fim={20} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={21} fim={25} retornar={(num, f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
                     </div>
                     <div className='col-md-6 col-sm-12'>
                         <div className='text-center'>
