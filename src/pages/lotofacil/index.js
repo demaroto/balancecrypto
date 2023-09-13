@@ -2,13 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import QuadoNumeros from '../../components/QuadoNumeros';
-import { setNumeros, getNumeros, setNumeroFixo } from '../../services/lotofacil';
+import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero } from '../../services/lotofacil';
+import ModalNumeros from '../../components/ModalNumeros';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     const themeText = theme === 'dark' ? 'light' : 'dark';
     const [impares, setImpares] = useState(0)
     const [pares, setPares] = useState(0)
+    const [qtd, setQtd] = useState(0)
+    const [numeroModal, setNumeroModal] = useState([])
+    const [titleModal, setTitleModal] = useState("Jogos")
+    const regras = []
+    regras[0] = [2,4,17].map(i => i - 1)
+    regras[1] = [3,10,13].map(i => i - 1)
+    regras[2] = [3,11,17].map(i => i - 1)
+    regras[3] = [1,13,16].map(i => i - 1)
+    regras[4] = [5,14,15].map(i => i - 1)
+    regras[5] = [6,9,12].map(i => i - 1)
+    regras[6] = [7,12,17].map(i => i - 1)
+    regras[7] = [4,5,13].map(i => i - 1)
+    regras[8] = [3,4,12].map(i => i - 1)
+    regras[9] = [7,10,14].map(i => i - 1)
+
+
+    const [jogos, setJogos] = useState([])
+
+    const openModal = (i) => {
+        setNumeroModal(jogos[i])
+        setTitleModal(`Jogos #${i+1}`)
+    }
 
     const changeNumerosSelecionados = (numero, fixo) => {
         const nums = getNumeros()
@@ -16,6 +39,7 @@ const Index = () => {
         if (fixo && nums.includes(numero)) {
             setNumeroFixo([fixo])
             changeImpares() 
+            
         }else{
             if (nums.includes(numero)) {
                 let res = nums.filter(n => numero !== n)
@@ -36,12 +60,33 @@ const Index = () => {
             }
 
         }
-       
+
+        if (getNumeros().length == 18 && getFixoNumero().length === 1){
+            montaJogos();
+        }
+
+    }
+
+    const montaJogos = () => {
+        const numeros = getNumeros()
+        const fixo = getFixoNumero()
+        if (numeros.length === 18 && fixo.length > 0) {
+            const semFixo = numeros.filter(n => n !== fixo[0])
+            const criarJogo = []
+            for (let k = 0; k < 10; k++) {
+                criarJogo[k] =  semFixo.filter((s,i) => !regras[k].includes(i))
+                criarJogo[k].push(fixo[0])
+                criarJogo[k].sort((a,b) => a - b)
+            }
+            
+            setJogos(criarJogo)
+        }
 
     }
 
     const changeImpares = () => {
         const nums = getNumeros()
+        setQtd(nums.length)
         if (nums.length > 0 && nums.length <= 18){
             //Impares
            const ip = nums.filter(num => {
@@ -64,7 +109,12 @@ const Index = () => {
 
     useEffect(() => {
         changeImpares()
+        montaJogos()
     }, []);
+
+    useEffect(() => {
+        console.log(jogos)
+    }, [jogos]);
 
     return (
         <div className='h-100'>
@@ -81,7 +131,8 @@ const Index = () => {
                     </div>
                     <div className='col-md-6 col-sm-12'>
                         <div className='text-center'>
-                            <span className={`text-${themeText} h4`}>Pares: {pares} / Ímpares: {impares}</span>
+                            <div className={`text-${themeText} h4`}>Pares: {pares} / Ímpares: {impares}</div>
+                            <div className={`text-${themeText} h4`}>Qtd: {qtd} de 18</div>
 
                         </div>
                     </div>
@@ -95,16 +146,8 @@ const Index = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>Jogo 1</td><td>0</td></tr>
-                            <tr><td>Jogo 2</td><td>0</td></tr>
-                            <tr><td>Jogo 3</td><td>0</td></tr>
-                            <tr><td>Jogo 4</td><td>0</td></tr>
-                            <tr><td>Jogo 5</td><td>0</td></tr>
-                            <tr><td>Jogo 6</td><td>0</td></tr>
-                            <tr><td>Jogo 7</td><td>0</td></tr>
-                            <tr><td>Jogo 8</td><td>0</td></tr>
-                            <tr><td>Jogo 9</td><td>0</td></tr>
-                            <tr><td>Jogo 10</td><td>0</td></tr>
+                            {jogos.map((jogo, i) => <tr><td><button className='btn bg-warning fw-bold text-dark' onClick={() => openModal(i)} data-bs-toggle="modal" data-bs-target="#modalNum" >{`Visualizar Jogo #${i+1}`}</button></td><td>{jogo.reduce((acc,v) => acc + v, 0)}</td></tr>)}
+                          
                         </tbody>
                     </table>
                 </div>
@@ -112,6 +155,7 @@ const Index = () => {
                     <button type="button" className='btn bg-warning' onClick={() => alert('Gerar resultado')}>Ver resultado</button>
                 </div>
             </main>
+            <ModalNumeros numeros={numeroModal} title={titleModal}/>
         </div>
     );
 }
