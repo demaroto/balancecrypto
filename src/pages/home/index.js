@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
-import HeaderComponent from '../../components/Header.Component';
 import CalculatorComponent from '../../components/Calculator.Component';
 import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 import WalletComponent from '../../components/Wallet.Component';

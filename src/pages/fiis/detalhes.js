@@ -43,14 +43,16 @@ const Index = () => {
     const insereAnos = () => {
         const aportes = getAportes()
         const res = [];
-        const result = aportes.map(a => {
+        aportes.map(a => {
             let value = parseInt(a.ano)
             if (!res.includes(value) && a.ativo === id) {
                 res.push(value)
             }
+            return true
         })
         
         setAnos(res)
+        return true
     }
 
     const handleSelectChange = function(e) {

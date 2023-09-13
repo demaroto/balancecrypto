@@ -20,9 +20,9 @@ const LinkListComponent = () => {
                     <ul className="navbar-nav">
                         
                         <li className="nav-item dropdown">
-                        <a className={`btn bg-success link-light nav-link dropdown-toggle text-white`} href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <Link className={`btn bg-success link-light nav-link dropdown-toggle text-white`} id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Meus Investimentos
-                        </a>
+                        </Link>
                         <ul className={"dropdown-menu bg-success"} aria-labelledby="navbarDropdownMenuLink">
                             <li className='text-center'><Link to={`/`} className='btn text-white w-100'>Crypto</Link></li>
                             <li className='text-center'><Link to={`/fiis`} className='btn text-white w-100'>Fundo Imobiliário</Link></li>

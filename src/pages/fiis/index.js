@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux'
-import HeaderComponent from '../../components/Header.Component';
 import LinkListComponent from '../../components/LinkList.Component';
 import { getAportesByCode, getGroups, getAportes, calcYieldByMonth, deleteAporte } from '../../services/fiis';
 import { Pencil, Plus, Trash } from 'react-bootstrap-icons';
