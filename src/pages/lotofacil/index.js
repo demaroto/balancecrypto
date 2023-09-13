@@ -61,7 +61,7 @@ const Index = () => {
 
         }
 
-        if (getNumeros().length == 18 && getFixoNumero().length === 1){
+        if (getNumeros().length === 18 && getFixoNumero().length === 1){
             montaJogos();
         }
 
