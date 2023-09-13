@@ -4,6 +4,7 @@ import LinkListComponent from '../../components/LinkList.Component';
 import QuadoNumeros from '../../components/QuadoNumeros';
 import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero } from '../../services/lotofacil';
 import ModalNumeros from '../../components/ModalNumeros';
+import FooterComponent from '../../components/Footer.Component';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -72,6 +73,7 @@ const Index = () => {
         const fixo = getFixoNumero()
         if (numeros.length === 18 && fixo.length > 0) {
             const semFixo = numeros.filter(n => n !== fixo[0])
+           
             const criarJogo = []
             for (let k = 0; k < 10; k++) {
                 criarJogo[k] =  semFixo.filter((s,i) => !regras[k].includes(i))
@@ -154,6 +156,7 @@ const Index = () => {
                 <div class="d-flex justify-content-end">
                     <button type="button" className='btn bg-warning' onClick={() => alert('Gerar resultado')}>Ver resultado</button>
                 </div>
+                <FooterComponent />
             </main>
             <ModalNumeros numeros={numeroModal} title={titleModal}/>
         </div>

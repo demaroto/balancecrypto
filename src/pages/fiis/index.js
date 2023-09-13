@@ -7,6 +7,7 @@ import { Pencil, Plus, Trash } from 'react-bootstrap-icons';
 import { Meses } from '../../utils/meses';
 import  DashboardBlockComponent from '../../components/DashboardBlock.Component';
 import ModalFormAportesComponent from '../../components/ModalForm.Component';
+import FooterComponent from '../../components/Footer.Component';
 
 
 const Index = () => {
@@ -146,6 +147,7 @@ const Index = () => {
                     </div>
                    
                 </div>
+                <FooterComponent />
             </main>
             <ModalFormAportesComponent id={idForm} update={mountTable}></ModalFormAportesComponent>
         </div>

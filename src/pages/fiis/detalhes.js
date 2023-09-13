@@ -7,6 +7,7 @@ import { Meses } from '../../utils/meses';
 import { getAportes, calcYieldByMonth, deleteAporte } from '../../services/fiis';
 import { Pencil, Trash } from 'react-bootstrap-icons';
 import ModalFormAportesComponent from '../../components/ModalForm.Component';
+import FooterComponent from '../../components/Footer.Component';
 
 
 const Index = () => {
@@ -140,7 +141,7 @@ const Index = () => {
                     </div>
                         </div>
                     </div>
-                
+                <FooterComponent />
             </main>
              <ModalFormAportesComponent id={idForm}></ModalFormAportesComponent>           
         </div>
