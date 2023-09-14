@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import QuadoNumeros from '../../components/QuadoNumeros';
-import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero } from '../../services/lotofacil';
+import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero, getNumerosSorteados } from '../../services/lotofacil';
 import ModalNumeros from '../../components/ModalNumeros';
 import FooterComponent from '../../components/Footer.Component';
+import QuadoNumerosSorteados from '../../components/QuadoNumerosSorteados';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -109,6 +110,13 @@ const Index = () => {
         }
     }
 
+    const changeNumerosSorteado = (num, total) => {
+        const sorteados = getNumerosSorteados()
+        if (sorteados.length === total) {
+           console.log(sorteados)
+        }
+    }
+
     useEffect(() => {
         changeImpares()
         montaJogos()
@@ -153,8 +161,19 @@ const Index = () => {
                         </tbody>
                     </table>
                 </div>
+                <div className="row">
+                <div className='col-12'>
+                        <div className='d-flex'>
+                            <h1 className={`text-${themeText}`}>Resultado</h1>
+                            <span className={`badge text-${themeText}`}>Selecione o resultado do sorteio</span>
+                        </div>
+                        <QuadoNumerosSorteados inicio={1} fim={13} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                        <QuadoNumerosSorteados inicio={14} fim={25} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                        
+                    </div>
+                </div>
                 <div class="d-flex justify-content-end">
-                    <button type="button" className='btn bg-warning' onClick={() => alert('Gerar resultado')}>Ver resultado</button>
+                    <button type="button" className='btn bg-warning fw-bold' onClick={() => alert('Gerar resultado')}>Aplicar resultado</button>
                 </div>
                 <FooterComponent />
             </main>

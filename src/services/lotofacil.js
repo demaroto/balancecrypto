@@ -26,4 +26,18 @@ const setNumeroFixo = (numero) => {
     localStorage.setItem('numero_fixo', JSON.stringify(numero))
 }
 
-export { getNumeros, setNumeros, getFixoNumero, setNumeroFixo }
+const setNumerosSorteados = (numeros) => {
+    localStorage.setItem('numeros_sorteados', JSON.stringify(numeros))
+}
+
+const getNumerosSorteados = () => {
+    const numero = localStorage.getItem('numeros_sorteados');
+    if (!numero) {
+        return [];
+    }
+    const result = numero ? JSON.parse(numero) : [];
+    const res = Array.isArray(result) ? result : JSON.parse(result)
+    return res
+}
+
+export { getNumeros, setNumeros, getFixoNumero, setNumeroFixo, setNumerosSorteados, getNumerosSorteados }
