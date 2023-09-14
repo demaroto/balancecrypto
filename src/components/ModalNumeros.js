@@ -17,7 +17,7 @@ const ModalNumeros = ({numeros, title, pontos}) => {
                     <div className="modal-body">
                         <div className="row">
                     
-                        {numeros.map(n => <div className={`col-3 border border-${pontos.includes(n) ? 'dark' : 'warning'} rounded-3 bg-${pontos.includes(n) ? 'danger' : theme} text-${themeText}`} ><h4 className='text-center'>{n}</h4></div>)}
+                        {numeros.map(n => <div className={`col-3 border border-${pontos.includes(n) ? 'dark' : 'warning'} rounded-3 bg-${pontos.includes(n) ? 'danger' : theme} text-${themeText}`} ><h4 className='text-center align-middle'>{n}</h4></div>)}
                         
                         
                         </div>
