@@ -15,6 +15,9 @@ const Index = () => {
     const [qtd, setQtd] = useState(0)
     const [numeroModal, setNumeroModal] = useState([])
     const [titleModal, setTitleModal] = useState("Jogos")
+    const [pontos, setPontos] = useState([])
+    const [pontosModal, setPontosModal] = useState([])
+    const [totalSorteado, setTotalSorteado] = useState(0)
     const regras = []
     regras[0] = [2,4,17].map(i => i - 1)
     regras[1] = [3,10,13].map(i => i - 1)
@@ -32,6 +35,7 @@ const Index = () => {
 
     const openModal = (i) => {
         setNumeroModal(jogos[i])
+        setPontosModal(pontos[i])
         setTitleModal(`Jogos #${i+1}`)
     }
 
@@ -112,8 +116,15 @@ const Index = () => {
 
     const changeNumerosSorteado = (num, total) => {
         const sorteados = getNumerosSorteados()
-        if (sorteados.length === total) {
-           console.log(sorteados)
+        setTotalSorteado(sorteados.length)
+        if (sorteados.length <= total) {
+            const pontuacao = []
+            jogos.map((j, i) => {
+                pontuacao[i] = jogos[i].filter(k => sorteados.includes(k))
+                return true
+            })
+            setPontos(pontuacao)
+            
         }
     }
 
@@ -123,7 +134,8 @@ const Index = () => {
     }, []);
 
     useEffect(() => {
-        console.log(jogos)
+        changeNumerosSorteado(null, 15)
+        
     }, [jogos]);
 
     return (
@@ -153,31 +165,40 @@ const Index = () => {
                             <tr>
                                 <th>Jogos</th>
                                 <th>Soma</th>
+                                <th>Pontos</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {jogos.map((jogo, i) => <tr><td><button className='btn bg-warning fw-bold text-dark' onClick={() => openModal(i)} data-bs-toggle="modal" data-bs-target="#modalNum" >{`Visualizar Jogo #${i+1}`}</button></td><td>{jogo.reduce((acc,v) => acc + v, 0)}</td></tr>)}
+                            {jogos.map((jogo, i) => {
+                                return <tr><td><button className='btn bg-warning fw-bold text-dark' onClick={() => openModal(i)} data-bs-toggle="modal" data-bs-target="#modalNum" >{`Visualizar Jogo #${i+1}`}</button></td>
+                                <td>{jogo.reduce((acc,v) => acc + v, 0)}</td>
+                                <td>{pontos.length > 0 ? pontos[i].length : 0}</td>
+                                </tr>
+                            })}
                           
                         </tbody>
                     </table>
                 </div>
                 <div className="row">
                 <div className='col-12'>
+                        <span className={`badge text-${themeText}`}>Selecione o resultado do sorteio</span>
                         <div className='d-flex'>
-                            <h1 className={`text-${themeText}`}>Resultado</h1>
-                            <span className={`badge text-${themeText}`}>Selecione o resultado do sorteio</span>
+                            <h1 className={`text-${themeText}`}>Resultado {totalSorteado} de 15</h1>
                         </div>
-                        <QuadoNumerosSorteados inicio={1} fim={13} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
-                        <QuadoNumerosSorteados inicio={14} fim={25} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
-                        
                     </div>
+
                 </div>
-                <div class="d-flex justify-content-end">
-                    <button type="button" className='btn bg-warning fw-bold' onClick={() => alert('Gerar resultado')}>Aplicar resultado</button>
+                <div className="col-md-6 col-sm-12">
+                        <QuadoNumerosSorteados inicio={1} fim={5} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                        <QuadoNumerosSorteados inicio={6} fim={10} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                        <QuadoNumerosSorteados inicio={11} fim={15} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                        <QuadoNumerosSorteados inicio={16} fim={20} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                        <QuadoNumerosSorteados inicio={21} fim={25} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
                 </div>
+          
                 <FooterComponent />
             </main>
-            <ModalNumeros numeros={numeroModal} title={titleModal}/>
+            <ModalNumeros numeros={numeroModal} title={titleModal} pontos={pontosModal}/>
         </div>
     );
 }
