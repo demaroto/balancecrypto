@@ -145,11 +145,11 @@ const Index = () => {
                 <h1 className={`text-${themeText}`}>Lotofácil</h1>
                 <div className='row'>
                     <div className='col-md-6 col-sm-12'>
-                        <QuadoNumeros inicio={1} fim={5} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
-                        <QuadoNumeros inicio={6} fim={10} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
-                        <QuadoNumeros inicio={11} fim={15} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
-                        <QuadoNumeros inicio={16} fim={20} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
-                        <QuadoNumeros inicio={21} fim={25} retornar={(num, f) => changeNumerosSelecionados(num,f)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={1} fim={5} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`p-2 mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={6} fim={10} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={11} fim={15} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={16} fim={20} retornar={(num,f) => changeNumerosSelecionados(num,f)} classesNumero={`p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
+                        <QuadoNumeros inicio={21} fim={25} retornar={(num, f) => changeNumerosSelecionados(num,f)} classesNumero={`p-2 col mb-1 me-1 col rounded-3 text-center`} classesQuadro={`row`} />
                     </div>
                     <div className='col-md-6 col-sm-12'>
                         <div className='text-center'>

@@ -1,8 +1,12 @@
 import React from 'react';
 import { getNumerosSorteados, setNumerosSorteados } from '../services/lotofacil';
+import { useSelector } from 'react-redux';
 
 const QuadoNumerosSorteados = ({inicio, fim, retornar, classesQuadro, classesNumero}) => {
  
+    const theme = useSelector((state) => state.theme.value)
+    const themeText = theme === 'dark' ? 'light' : 'dark';
+
     const changeNum = (e, i) => {
         const sorteados = getNumerosSorteados()
         if (sorteados.includes(i)) {
@@ -30,7 +34,7 @@ const QuadoNumerosSorteados = ({inicio, fim, retornar, classesQuadro, classesNum
     const getClassName = (i) => {
         const sorteados = getNumerosSorteados()
         
-        return sorteados.includes(i) ? 'bg-warning' : 'bg-white'
+        return sorteados.includes(i) ? 'bg-warning text-dark' : `bg-${themeText} text-${theme}`
     }
     const renderizaQuadro = () => {
         const result = [];
