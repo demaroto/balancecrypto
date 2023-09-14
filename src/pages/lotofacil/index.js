@@ -6,6 +6,7 @@ import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero, getNumerosSortead
 import ModalNumeros from '../../components/ModalNumeros';
 import FooterComponent from '../../components/Footer.Component';
 import QuadoNumerosSorteados from '../../components/QuadoNumerosSorteados';
+import { Star, StarFill } from 'react-bootstrap-icons';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -128,6 +129,22 @@ const Index = () => {
         }
     }
 
+    const checkPontos = (pontos) => {
+        switch (pontos) {
+            case 11:
+            case 12:
+                return <div className='d-flex justify-content-start align-items-center'><StarFill className='text-secondary'/><h5 className='align-middle'><span className='bg-secondary badge'>{pontos}</span></h5></div>
+            case 13:
+                return <div className='d-flex justify-content-start align-items-center text-white align-middle'><StarFill className='text-primary'/><h5 className='align-middle'><span className='bg-primary badge'>{pontos}</span></h5></div>
+            case 14:
+                return <div className='d-flex justify-content-start align-items-center'><StarFill className='text-success'/><h5 className='align-middle'><span className='bg-success badge'>{pontos}</span></h5></div>
+            case 15:
+            return <div className='d-flex justify-content-start align-items-center'><StarFill className='text-danger'/><h5 className='align-middle'><span className='bg-danger badge'>{pontos}</span></h5></div>
+            default:
+                return <div className='d-flex justify-content-start align-items-center'><Star />{pontos}</div>
+        }
+    }
+
     useEffect(() => {
         changeImpares()
         montaJogos()
@@ -172,7 +189,7 @@ const Index = () => {
                             {jogos.map((jogo, i) => {
                                 return <tr><td><button className='btn bg-warning fw-bold text-dark' onClick={() => openModal(i)} data-bs-toggle="modal" data-bs-target="#modalNum" >{`Visualizar Jogo #${i+1}`}</button></td>
                                 <td>{jogo.reduce((acc,v) => acc + v, 0)}</td>
-                                <td>{pontos.length > 0 ? pontos[i].length : 0}</td>
+                                <td>{pontos.length > 0 ? checkPontos(pontos[i].length) : 0}</td>
                                 </tr>
                             })}
                           
