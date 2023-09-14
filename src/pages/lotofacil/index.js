@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import QuadoNumeros from '../../components/QuadoNumeros';
-import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero, getNumerosSorteados } from '../../services/lotofacil';
+import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero, getNumerosSorteados, apiLotofacil, setNumerosSorteados } from '../../services/lotofacil';
 import ModalNumeros from '../../components/ModalNumeros';
 import FooterComponent from '../../components/Footer.Component';
 import QuadoNumerosSorteados from '../../components/QuadoNumerosSorteados';
@@ -19,6 +19,9 @@ const Index = () => {
     const [pontos, setPontos] = useState([])
     const [pontosModal, setPontosModal] = useState([])
     const [totalSorteado, setTotalSorteado] = useState(0)
+    const [concursos, setConcursos] = useState([])
+    const [concurso, setConcurso] = useState({})
+    const [idConcurso, setIdConcurso] = useState(0)
     const regras = []
     regras[0] = [2,4,17].map(i => i - 1)
     regras[1] = [3,10,13].map(i => i - 1)
@@ -117,7 +120,7 @@ const Index = () => {
 
     const changeNumerosSorteado = (num, total) => {
         const sorteados = getNumerosSorteados()
-        setTotalSorteado(sorteados.length)
+  
         if (sorteados.length <= total) {
             const pontuacao = []
             jogos.map((j, i) => {
@@ -145,15 +148,64 @@ const Index = () => {
         }
     }
 
+    const insertResult = (key) => {
+       if (concursos.length > 0) {
+
+           const c = concursos[key]
+          
+           const obj = {data: c.data, premiacoes: c.premiacoes}
+           console.log(obj.premiacoes)
+           setConcurso(obj)
+           if (c.dezenas.length > 0) {
+               setNumerosSorteados([])
+               setTotalSorteado(0)
+                console.log(c.dezenas)
+                setNumerosSorteados(c.dezenas.map(v => parseInt(v)))
+           }
+       }
+        
+    }
+
+    const changeConcurso = () => {
+        
+        if (concursos.length > 0 && (idConcurso + 1) < concursos.length && (idConcurso) > 0) {
+            return <div className='d-flex justify-content-center'>
+                <button className='btn btn-primary me-2' onClick={() => setIdConcurso((idConcurso + 1))}>Anterior</button>
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso - 1))}>Próximo</button>
+            </div>
+        }
+        if (concursos.length > 0 && (idConcurso + 1) > concursos.length) {
+            return <div className='d-flex justify-content-center'>
+                
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso - 1))}>Próximo</button>
+            </div>
+        }
+
+        if (concursos.length > 0 && (idConcurso - 1) < 0) {
+            return <div className='d-flex justify-content-center'>
+                
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso + 1))}>Anterior</button>
+            </div>
+        }
+    }
+
     useEffect(() => {
         changeImpares()
         montaJogos()
+        setIdConcurso(0)
+        apiLotofacil().then(res => { 
+            setConcursos(res)
+            
+        })
     }, []);
 
     useEffect(() => {
         changeNumerosSorteado(null, 15)
+        insertResult(idConcurso)
         
-    }, [jogos]);
+    }, [jogos, idConcurso, concursos]);
+
+    
 
     return (
         <div className='h-100'>
@@ -196,23 +248,30 @@ const Index = () => {
                         </tbody>
                     </table>
                 </div>
+            
                 <div className="row">
-                <div className='col-12'>
-                        <span className={`badge text-${themeText}`}>Selecione o resultado do sorteio</span>
-                        <div className='d-flex'>
-                            <h1 className={`text-${themeText}`}>Resultado {totalSorteado} de 15</h1>
-                        </div>
+                    
+                    <div className="col-md-6 col-sm-12">
+                            <QuadoNumerosSorteados inicio={1} fim={5} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                            <QuadoNumerosSorteados inicio={6} fim={10} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                            <QuadoNumerosSorteados inicio={11} fim={15} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                            <QuadoNumerosSorteados inicio={16} fim={20} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
+                            <QuadoNumerosSorteados inicio={21} fim={25} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
                     </div>
-
+                    <div className="col-md-6 col-sm-12">
+                        <h4 className={`text-${themeText} text-center`}>Concursos Lotofacil</h4>
+                        {concursos.length && changeConcurso()}
+                        {concurso.premiacoes && concurso.premiacoes.map(p => {
+                            return <div className={`card bg-${theme}`}>
+                                <div className="card-body">
+                                    <h5 className={`card-title text-${themeText}`}>{p.descricao} - {concurso.data}</h5>
+                                    <p className={`card-text text-${themeText}`}>Ganhadores: {new Intl.NumberFormat("pt-BR").format(p.ganhadores) || 0}</p>
+                                    <p className={`card-text text-${themeText}`}>Prêmio: {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(p.valorPremio) || 0}</p>
+                                </div>
+                            </div>;
+                        })}
+                    </div>
                 </div>
-                <div className="col-md-6 col-sm-12">
-                        <QuadoNumerosSorteados inicio={1} fim={5} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
-                        <QuadoNumerosSorteados inicio={6} fim={10} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
-                        <QuadoNumerosSorteados inicio={11} fim={15} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
-                        <QuadoNumerosSorteados inicio={16} fim={20} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
-                        <QuadoNumerosSorteados inicio={21} fim={25} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
-                </div>
-          
                 <FooterComponent />
             </main>
             <ModalNumeros numeros={numeroModal} title={titleModal} pontos={pontosModal}/>

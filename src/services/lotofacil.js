@@ -40,4 +40,10 @@ const getNumerosSorteados = () => {
     return res
 }
 
-export { getNumeros, setNumeros, getFixoNumero, setNumeroFixo, setNumerosSorteados, getNumerosSorteados }
+const apiLotofacil = async () => {
+    const result = await fetch(`https://loteriascaixa-api.herokuapp.com/api/lotofacil`)
+    return result.json()
+}
+
+
+export { getNumeros, setNumeros, getFixoNumero, setNumeroFixo, setNumerosSorteados, getNumerosSorteados, apiLotofacil }
