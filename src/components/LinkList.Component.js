@@ -24,7 +24,7 @@ const LinkListComponent = () => {
                             Meus Investimentos
                         </Link>
                         <ul className={"dropdown-menu bg-success"} aria-labelledby="navbarDropdownMenuLink">
-                            <li className='text-center'><Link to={`/`} className='btn text-white w-100'>Crypto</Link></li>
+                            <li className='text-center'><Link to={`/token`} className='btn text-white w-100'>Crypto</Link></li>
                             <li className='text-center'><Link to={`/fiis`} className='btn text-white w-100'>Fundo Imobiliário</Link></li>
                             <li className='text-center'><Link to={`/lotofacil`} className='btn text-white w-100'>Lotofácil</Link></li>
                         </ul>

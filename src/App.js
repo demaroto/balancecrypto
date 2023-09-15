@@ -1,6 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./pages/home"
+import Token from "./pages/cripto"
+import Home from "./pages/home"
 import Fiis from "./pages/fiis"
 import FiisDetalhes from "./pages/fiis/detalhes"
 import Lotofacil from "./pages/lotofacil/index"
@@ -8,7 +9,11 @@ import Lotofacil from "./pages/lotofacil/index"
 const router = createBrowserRouter([
   {
     path: '/token/:id',
-    element: <HomePage />
+    element: <Token />
+  },
+  {
+    path: '/token',
+    element: <Token />
   },
   {
     path: '/fiis/detalhes/:id',
@@ -24,7 +29,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <HomePage />
+    element: <Home />
   },
   
 
