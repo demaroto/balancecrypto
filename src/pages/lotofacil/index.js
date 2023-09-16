@@ -19,6 +19,7 @@ const Index = () => {
     const [pontos, setPontos] = useState([])
     const [pontosModal, setPontosModal] = useState([])
     const [totalSorteado, setTotalSorteado] = useState(0)
+    const [sorteados, setSorteados] = useState([])
     const [concursos, setConcursos] = useState([])
     const [concurso, setConcurso] = useState({})
     const [idConcurso, setIdConcurso] = useState(0)
@@ -40,6 +41,8 @@ const Index = () => {
     const openModal = (i) => {
         setNumeroModal(jogos[i])
         setPontosModal(pontos[i])
+        console.log(jogos[i])
+        console.log(pontos[i])
         setTitleModal(`Jogos #${i+1}`)
     }
 
@@ -154,14 +157,16 @@ const Index = () => {
            const c = concursos[key]
           
            const obj = {data: c.data, premiacoes: c.premiacoes}
-           console.log(obj.premiacoes)
+          
            setConcurso(obj)
            if (c.dezenas.length > 0) {
                setNumerosSorteados([])
                setTotalSorteado(0)
                 console.log(c.dezenas)
                 setNumerosSorteados(c.dezenas.map(v => parseInt(v)))
+                setSorteados(c.dezenas.map(v => parseInt(v)))
            }
+
        }
         
     }
@@ -202,7 +207,7 @@ const Index = () => {
     useEffect(() => {
         changeNumerosSorteado(null, 15)
         insertResult(idConcurso)
-        
+        setPontosModal(pontos)
     }, [jogos, idConcurso, concursos]);
 
     
@@ -274,7 +279,7 @@ const Index = () => {
                 </div>
                 <FooterComponent />
             </main>
-            <ModalNumeros numeros={numeroModal} title={titleModal} pontos={pontosModal}/>
+            <ModalNumeros numeros={numeroModal} title={titleModal} pontos={pontosModal} resultado={sorteados}/>
         </div>
     );
 }
