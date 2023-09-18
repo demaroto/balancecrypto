@@ -234,6 +234,9 @@ const Index = () => {
                     </div>
                 </div>
                 <div className='row'>
+                    <div className='col-12'>
+                    {concursos.length && changeConcurso()}
+                    </div>
                     <table className={`table table-${theme} table-striped`}>
                         <thead>
                             <tr>
@@ -265,7 +268,7 @@ const Index = () => {
                     </div>
                     <div className="col-md-6 col-sm-12">
                         <h4 className={`text-${themeText} text-center`}>Concursos Lotofacil</h4>
-                        {concursos.length && changeConcurso()}
+                        
                         {concurso.premiacoes && concurso.premiacoes.map(p => {
                             return <div className={`card bg-${theme}`}>
                                 <div className="card-body">
