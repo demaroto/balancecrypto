@@ -246,7 +246,7 @@ const Index = () => {
                             {jogos.map((jogo, i) => {
                                 return <tr><td><button className='btn bg-warning fw-bold text-dark' onClick={() => openModal(i)} data-bs-toggle="modal" data-bs-target="#modalNum" >{`Visualizar Jogo #${i+1}`}</button></td>
                                 <td>{jogo.reduce((acc,v) => acc + v, 0)}</td>
-                                <td>{pontos.length > 0 ? checkPontos(pontos[i].length) : 0}</td>
+                                <td>{sorteados.length > 0 ? checkPontos(sorteados.reduce((acc, v) => acc + (jogo.includes(v) ? 1 : 0), 0)) : 0}</td>
                                 </tr>
                             })}
                           
