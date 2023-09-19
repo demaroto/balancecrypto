@@ -6,7 +6,7 @@ import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero, getNumerosSortead
 import ModalNumeros from '../../components/ModalNumeros';
 import FooterComponent from '../../components/Footer.Component';
 import QuadoNumerosSorteados from '../../components/QuadoNumerosSorteados';
-import { Star, StarFill } from 'react-bootstrap-icons';
+import { ArrowLeftShort, ArrowRightShort, Star, StarFill } from 'react-bootstrap-icons';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -173,23 +173,29 @@ const Index = () => {
 
     const changeConcurso = () => {
         
+        if (concursos.length === 0) {
+            return <div className='d-flex justify-content-center'><button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span> Carregando...</span>
+          </button></div>
+        }
         if (concursos.length > 0 && (idConcurso + 1) < concursos.length && (idConcurso) > 0) {
             return <div className='d-flex justify-content-center'>
-                <button className='btn btn-primary me-2' onClick={() => setIdConcurso((idConcurso + 1))}>Anterior</button>
-                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso - 1))}>Próximo</button>
+                <button className='btn btn-primary me-2' onClick={() => setIdConcurso((idConcurso + 1))}><ArrowLeftShort /> Anterior</button>
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso - 1))}>Próximo <ArrowRightShort /></button>
             </div>
         }
         if (concursos.length > 0 && (idConcurso + 1) > concursos.length) {
             return <div className='d-flex justify-content-center'>
                 
-                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso - 1))}>Próximo</button>
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso - 1))}>Próximo <ArrowRightShort /></button>
             </div>
         }
 
         if (concursos.length > 0 && (idConcurso - 1) < 0) {
             return <div className='d-flex justify-content-center'>
                 
-                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso + 1))}>Anterior</button>
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso + 1))}><ArrowLeftShort /> Anterior</button>
             </div>
         }
     }
@@ -234,8 +240,9 @@ const Index = () => {
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-12'>
-                    {concursos.length && changeConcurso()}
+                    <div className='col-12 my-2'>
+                        <h5 className={`text-${themeText} text-center`}>Concursos Lotofácil</h5>
+                    {changeConcurso()}
                     </div>
                     <table className={`table table-${theme} table-striped`}>
                         <thead>
