@@ -7,6 +7,7 @@ import ModalNumeros from '../../components/ModalNumeros';
 import FooterComponent from '../../components/Footer.Component';
 import QuadoNumerosSorteados from '../../components/QuadoNumerosSorteados';
 import { ArrowLeftShort, ArrowRightShort, Star, StarFill } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -273,7 +274,7 @@ const Index = () => {
                             <QuadoNumerosSorteados inicio={16} fim={20} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
                             <QuadoNumerosSorteados inicio={21} fim={25} retornar={(num, t) => changeNumerosSorteado(num, t)} classesNumero={`text-${theme} p-2 col mb-1 me-1 col rounded-3 text-center fw-bold`} classesQuadro={`row`} />
                     </div>
-                    <div className="col-md-6 col-sm-12">
+                    <div className="col-md-3 col-sm-12">
                         <h4 className={`text-${themeText} text-center`}>Concursos Lotofacil</h4>
                         
                         {concurso.premiacoes && concurso.premiacoes.map(p => {
@@ -285,6 +286,11 @@ const Index = () => {
                                 </div>
                             </div>;
                         })}
+                    </div>
+                    <div className="col-md-3 col-sm-12">
+                        <div className="d-grid gap-2 mx-auto">
+                            <Link className={`btn text-${themeText} btn-outline-success`} to={'/lotofacil/grupos'}>Configuração de Grupos</Link>
+                        </div>
                     </div>
                 </div>
                 <FooterComponent />

@@ -40,10 +40,24 @@ const getNumerosSorteados = () => {
     return res
 }
 
+const getNumeroEliminadoGrupo = () => {
+    const numero = localStorage.getItem('numero_grupo');
+    if (!numero) {
+        return [];
+    }
+    const result = numero ? JSON.parse(numero) : [];
+    const res = Array.isArray(result) ? result : JSON.parse(result)
+    return res
+}
+
+const setNumeroEliminadoGrupo = (num) => {
+    localStorage.setItem('numero_grupo', JSON.stringify(num))
+}
+
 const apiLotofacil = async () => {
     const result = await fetch(`https://loteriascaixa-api.herokuapp.com/api/lotofacil`)
     return result.json()
 }
 
 
-export { getNumeros, setNumeros, getFixoNumero, setNumeroFixo, setNumerosSorteados, getNumerosSorteados, apiLotofacil }
+export { getNumeros, setNumeros, getFixoNumero, setNumeroFixo, setNumerosSorteados, getNumerosSorteados, apiLotofacil, setNumeroEliminadoGrupo, getNumeroEliminadoGrupo }

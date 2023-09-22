@@ -5,6 +5,7 @@ import Home from "./pages/home"
 import Fiis from "./pages/fiis"
 import FiisDetalhes from "./pages/fiis/detalhes"
 import Lotofacil from "./pages/lotofacil/index"
+import Grupos from "./pages/lotofacil/grupos";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: '/fiis',
     element: <Fiis />
+  },
+  {
+    path: '/lotofacil/grupos',
+    element: <Grupos />
   },
   {
     path: '/lotofacil',
