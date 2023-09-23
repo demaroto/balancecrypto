@@ -50,6 +50,20 @@ const getNumeroEliminadoGrupo = () => {
     return res
 }
 
+const getLocalStorage = (item) => {
+    const numero = localStorage.getItem(item);
+    if (!numero) {
+        return [];
+    }
+    const result = numero ? JSON.parse(numero) : [];
+    const res = Array.isArray(result) ? result : JSON.parse(result)
+    return res
+}
+
+const setLocalStorage = (item, num) => {
+    localStorage.setItem(item, JSON.stringify(num))
+}
+
 const setNumeroEliminadoGrupo = (num) => {
     localStorage.setItem('numero_grupo', JSON.stringify(num))
 }
@@ -60,4 +74,4 @@ const apiLotofacil = async () => {
 }
 
 
-export { getNumeros, setNumeros, getFixoNumero, setNumeroFixo, setNumerosSorteados, getNumerosSorteados, apiLotofacil, setNumeroEliminadoGrupo, getNumeroEliminadoGrupo }
+export { getNumeros, setNumeros, getFixoNumero, setNumeroFixo, setNumerosSorteados, getNumerosSorteados, apiLotofacil, setNumeroEliminadoGrupo, getNumeroEliminadoGrupo, getLocalStorage, setLocalStorage }
