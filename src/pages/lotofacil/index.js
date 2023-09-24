@@ -24,6 +24,7 @@ const Index = () => {
     const [concursos, setConcursos] = useState([])
     const [concurso, setConcurso] = useState({})
     const [idConcurso, setIdConcurso] = useState(0)
+
     const regras = []
     regras[0] = [2,4,17].map(i => i - 1)
     regras[1] = [3,10,13].map(i => i - 1)
@@ -156,16 +157,18 @@ const Index = () => {
        if (concursos.length > 0) {
 
            const c = concursos[key]
-          
+         
            const obj = {data: c.data, premiacoes: c.premiacoes}
           
            setConcurso(obj)
            if (c.dezenas.length > 0) {
                setNumerosSorteados([])
                setTotalSorteado(0)
-                console.log(c.dezenas)
+                
                 setNumerosSorteados(c.dezenas.map(v => parseInt(v)))
                 setSorteados(c.dezenas.map(v => parseInt(v)))
+
+               
            }
 
        }
@@ -206,8 +209,7 @@ const Index = () => {
         montaJogos()
         setIdConcurso(0)
         apiLotofacil().then(res => { 
-            setConcursos(res)
-            
+            setConcursos(res) 
         })
     }, []);
 

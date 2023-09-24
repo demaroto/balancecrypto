@@ -3,12 +3,22 @@ import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import FooterComponent from '../../components/Footer.Component';
 import QuadoNumerosGrupo from '../../components/QuadoNumerosGrupo';
-import { getLocalStorage, setLocalStorage } from '../../services/lotofacil';
+import { apiLotofacil, getLocalStorage, getNumerosSorteados, setLocalStorage, setNumeros, setNumerosSorteados } from '../../services/lotofacil';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeftShort, ArrowRightShort } from 'react-bootstrap-icons';
 const Grupos = () => {
     const theme = useSelector((state) => state.theme.value)
     const themeText = theme === 'dark' ? 'light' : 'dark';
     const [grupos, setGrupos] = useState([])
     const [eliminado, setEliminado] = useState([])
+    const [concursos, setConcursos] = useState([])
+    const [concurso, setConcurso] = useState({})
+    const [idConcurso, setIdConcurso] = useState(null)
+    const [gruposComPontos, setGruposComPontos] = useState([])
+    const [sorteados, setSorteados] = useState([])
+
+    const navigate = useNavigate()
+    
     const changeSelecionado = (num,f) => {
         if (!eliminado.includes(num)) {
             setLocalStorage('numero_grupo', [num])
@@ -19,6 +29,10 @@ const Grupos = () => {
     useEffect(() => {
         const numEliminado = async () => setEliminado(await getLocalStorage('numero_grupo'))
         numEliminado()
+        apiLotofacil().then(res => { 
+            setConcursos(res)
+            setIdConcurso(0)
+        })
     }, []);
 
     const configGroups = () => {
@@ -43,9 +57,73 @@ const Grupos = () => {
         setGrupos([gr1,gr2,gr3,gr4,gr5,gr6,gr7,gr8])
     }
 
+
+    const insertResult = (key) => {
+        if (concursos.length > 0) {
+ 
+            const c = concursos[key]
+           
+            const obj = {data: c.data, premiacoes: c.premiacoes}
+           
+            setConcurso(obj)
+            if (c.dezenas.length > 0) {
+                setNumerosSorteados([])
+                setNumerosSorteados(c.dezenas.map(v => parseInt(v)))
+                setSorteados(c.dezenas.map(v => parseInt(v)))
+                
+            }
+ 
+        }
+         
+     }
+    const changeConcurso = () => {
+        
+        if (concursos.length === 0) {
+            return <div className='d-flex justify-content-center'><button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span> Carregando...</span>
+          </button></div>
+        }
+        if (concursos.length > 0 && (idConcurso + 1) < concursos.length && (idConcurso) > 0) {
+            return <div className='d-flex justify-content-center'>
+                <button className='btn btn-primary me-2' onClick={() => setIdConcurso((idConcurso + 1))}><ArrowLeftShort /> Anterior</button>
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso - 1))}>Próximo <ArrowRightShort /></button>
+            </div>
+        }
+        if (concursos.length > 0 && (idConcurso + 1) > concursos.length) {
+            return <div className='d-flex justify-content-center'>
+                
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso - 1))}>Próximo <ArrowRightShort /></button>
+            </div>
+        }
+
+        if (concursos.length > 0 && (idConcurso - 1) < 0) {
+            return <div className='d-flex justify-content-center'>
+                
+                <button className='btn btn-primary' onClick={() => setIdConcurso((idConcurso + 1))}><ArrowLeftShort /> Anterior</button>
+            </div>
+        }
+    }
+
     useEffect(() => {
         configGroups()
-    }, [eliminado]);
+        
+       
+        
+    }, [eliminado ]);
+    
+
+    useEffect(() => {
+        insertResult(idConcurso)
+    }, [idConcurso]);
+
+
+
+
+    const aplicarGrupo = index => {
+        setNumeros(grupos[index]);
+        navigate('/lotofacil')
+    }
 
     return (
         <div className='h-100'>
@@ -62,16 +140,23 @@ const Grupos = () => {
                     </div>
                 </div>
                 <div className='row'>
+                    <div className={`col-12`}>
+                        <h5 className={`text-${themeText}`}>Resultado dos Concursos</h5>
+                        {changeConcurso()}
+                    </div>
                     {grupos.map((grupo, i) => {
                         return <div className='col-md-6 col-sm-12 mt-1'>
                             <div className={`card bg-${themeText}`}>
-                                <h5 class="card-header">Grupo - {i+1}</h5>
+                                <h5 class="card-header">Grupo - {i+1} <span className='badge bg-danger'>{sorteados.filter(s => {
+                                      return grupo.includes(s)  
+                                    }).length} Pontos</span></h5>
+                                
                                 <div className='card-body d-flex'>
                                     <div className='row'>
                                     {grupo.map(num => {
                                         return <div className={`p-2 mb-1 col-2 rounded-3 text-center bg-warning text-dark fw-bold`}>{num}</div>  
                                     })}
-                                    <button className='btn p-2 mb-1 me-1 col-12 rounded-3 text-center bg-primary text-white'>Aplicar</button>
+                                    <button className='btn p-2 mb-1 me-1 col-12 rounded-3 text-center bg-primary text-white' onClick={() => aplicarGrupo(i)}>Aplicar</button>
                                     </div>
                                 </div>
                             </div>

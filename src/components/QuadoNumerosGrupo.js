@@ -23,7 +23,6 @@ const QuadoNumerosGrupo = ({inicio, fim, retornar, classesQuadro, classesNumero}
 
     const getClassName = (i) => {
         const selecionados = getNumeroEliminadoGrupo()
-        console.log(selecionados)
         return selecionados.length ? selecionados.includes(i) ? 'bg-danger text-white' : `bg-success text-${themeText}` : 'bg-white text-dark'
     }
     const renderizaQuadro = () => {
