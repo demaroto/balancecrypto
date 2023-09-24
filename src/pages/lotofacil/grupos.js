@@ -30,7 +30,7 @@ const Grupos = () => {
         const row_5 = [4,6,12,13,20,22]
         const row_6 = [3,7,9,11,19,20]
         const row_7 = [2,8,10,13,18,23]
-        const row_8 = [1,5,9,14,17,19]
+        const row_8 = [1,9,11,17,18,23]
         
         const gr1 = criarNumeros.filter((l,index) => !row_1.includes(index + 1));
         const gr2 = criarNumeros.filter((l,index) => !row_2.includes(index + 1));
@@ -63,14 +63,16 @@ const Grupos = () => {
                 </div>
                 <div className='row'>
                     {grupos.map((grupo, i) => {
-                        return <div className='col-sm-12 mt-1'>
-                            <div className='card'>
+                        return <div className='col-md-6 col-sm-12 mt-1'>
+                            <div className={`card bg-${themeText}`}>
                                 <h5 class="card-header">Grupo - {i+1}</h5>
                                 <div className='card-body d-flex'>
+                                    <div className='row'>
                                     {grupo.map(num => {
-                                        return <div className='p-2 mb-1 me-1 col rounded-3 text-center bg-dark text-white'>{num}</div>  
+                                        return <div className={`p-2 mb-1 col-2 rounded-3 text-center bg-warning text-dark fw-bold`}>{num}</div>  
                                     })}
-                                    <button className='btn p-2 mb-1 me-1 col rounded-3 text-center bg-primary text-white'>Usar</button>
+                                    <button className='btn p-2 mb-1 me-1 col-12 rounded-3 text-center bg-primary text-white'>Aplicar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
