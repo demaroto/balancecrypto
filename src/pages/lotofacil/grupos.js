@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import FooterComponent from '../../components/Footer.Component';
 import QuadoNumerosGrupo from '../../components/QuadoNumerosGrupo';
-import { apiLotofacil, getLocalStorage, getNumerosSorteados, setLocalStorage, setNumeros, setNumerosSorteados } from '../../services/lotofacil';
+import { apiLotofacil, getLocalStorage, getNumerosSorteados, setLocalStorage, setNumeroFixo, setNumeros, setNumerosSorteados } from '../../services/lotofacil';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftShort, ArrowRightShort } from 'react-bootstrap-icons';
 const Grupos = () => {
@@ -121,6 +121,7 @@ const Grupos = () => {
 
 
     const aplicarGrupo = index => {
+        setNumeroFixo([])
         setNumeros(grupos[index]);
         navigate('/lotofacil')
     }
