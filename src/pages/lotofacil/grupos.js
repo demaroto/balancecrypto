@@ -142,7 +142,7 @@ const Grupos = () => {
                 </div>
                 <div className='row'>
                     <div className={`col-12`}>
-                        <h5 className={`text-${themeText}`}>Resultado dos Concursos</h5>
+                        <h5 className={`text-${themeText}`}>Resultado dos Concursos - {concursos.length > 0 ? '#' + concursos[idConcurso].concurso : 'Carregando..'}</h5>
                         {changeConcurso()}
                     </div>
                     {grupos.map((grupo, i) => {

@@ -244,7 +244,7 @@ const Index = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12 my-2'>
-                        <h5 className={`text-${themeText} text-center`}>Concursos Lotofácil</h5>
+                        <h5 className={`text-${themeText} text-center`}>Concursos Lotofácil - {concursos.length > 0 ? '#' + concursos[idConcurso].concurso : 'Carregando..'}</h5>
                     {changeConcurso()}
                     </div>
                     <table className={`table table-${theme} table-striped`}>
