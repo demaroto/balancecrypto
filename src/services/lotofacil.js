@@ -73,7 +73,7 @@ const apiLotofacil = async () => {
 
     const date2 = new Date();
     if (updated) {
-        const date1 = new Date(updated);
+        const date1 = new Date(updated.replaceAll('"', ''));
         const diffTime = Math.abs(date2 - date1);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         if (diffDays > 0){
