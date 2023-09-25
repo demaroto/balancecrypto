@@ -75,7 +75,7 @@ const apiLotofacil = async () => {
     if (updated) {
         const date1 = new Date(updated.replaceAll('"', ''));
         const diffTime = date2.getDate() - date1.getDate();
-        console.log(diffTime)
+        
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         if (diffDays > 0){
             console.log('buscando dados na api')
