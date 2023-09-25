@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import QuadoNumeros from '../../components/QuadoNumeros';
-import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero, getNumerosSorteados, apiLotofacil, setNumerosSorteados } from '../../services/lotofacil';
+import { setNumeros, getNumeros, setNumeroFixo, getFixoNumero, getNumerosSorteados, apiLotofacil, setNumerosSorteados, setLocalStorage } from '../../services/lotofacil';
 import ModalNumeros from '../../components/ModalNumeros';
 import FooterComponent from '../../components/Footer.Component';
 import QuadoNumerosSorteados from '../../components/QuadoNumerosSorteados';
@@ -209,7 +209,9 @@ const Index = () => {
         montaJogos()
         setIdConcurso(0)
         apiLotofacil().then(res => { 
+            console.log(res)
             setConcursos(res) 
+            setLocalStorage('api_lotofacil', res)
         })
     }, []);
 

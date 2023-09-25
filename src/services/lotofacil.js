@@ -69,8 +69,31 @@ const setNumeroEliminadoGrupo = (num) => {
 }
 
 const apiLotofacil = async () => {
-    const result = await fetch(`https://loteriascaixa-api.herokuapp.com/api/lotofacil`)
-    return result.json()
+    const updated = localStorage.getItem('updated_api')
+
+    const date2 = new Date();
+    if (updated) {
+        const date1 = new Date(updated);
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > 0){
+            console.log('buscando dados na api')
+            const result = await fetch(`https://loteriascaixa-api.herokuapp.com/api/lotofacil`)
+            setLocalStorage('updated_api', new Date())
+            const response = result.json()
+            return response
+        }else{
+            console.log('buscando dados localmente')
+            const response = JSON.parse(localStorage.getItem('api_lotofacil'))
+            return response
+        }
+    }else {
+        console.log('buscando dados na api')
+        const result = await fetch(`https://loteriascaixa-api.herokuapp.com/api/lotofacil`)
+            setLocalStorage('updated_api', new Date())
+            const response = result.json()
+            return response
+    }
 }
 
 

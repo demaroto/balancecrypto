@@ -31,6 +31,7 @@ const Grupos = () => {
         numEliminado()
         apiLotofacil().then(res => { 
             setConcursos(res)
+            setLocalStorage('api_lotofacil', res)
             setIdConcurso(0)
         })
     }, []);
