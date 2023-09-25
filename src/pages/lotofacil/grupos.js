@@ -144,6 +144,9 @@ const Grupos = () => {
                 <div className='row'>
                     <div className={`col-12`}>
                         <h5 className={`text-${themeText}`}>Resultado dos Concursos - {concursos.length > 0 ? '#' + concursos[idConcurso].concurso : 'Carregando..'}</h5>
+                        <div className={`row p-2 justify-content-center`}>
+                            {sorteados.map(s => <div className='col-2 badge bg-primary text-white mb-1 ms-1 me-1'>{s}</div>)}
+                        </div>
                         {changeConcurso()}
                     </div>
                     {grupos.map((grupo, i) => {
