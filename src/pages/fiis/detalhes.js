@@ -8,7 +8,7 @@ import { getAportes, calcYieldByMonth, deleteAporte } from '../../services/fiis'
 import { Pencil, Trash } from 'react-bootstrap-icons';
 import ModalFormAportesComponent from '../../components/ModalForm.Component';
 import FooterComponent from '../../components/Footer.Component';
-
+import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -143,6 +143,7 @@ const Index = () => {
                     </div>
                         </div>
                     </div>
+                <AnunciosGoogleComponent />
                 <FooterComponent />
             </main>
              <ModalFormAportesComponent id={idForm}></ModalFormAportesComponent>           

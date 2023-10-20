@@ -6,6 +6,7 @@ import QuadoNumerosGrupo from '../../components/QuadoNumerosGrupo';
 import { apiLotofacil, getLocalStorage, getNumerosSorteados, setLocalStorage, setNumeroFixo, setNumeros, setNumerosSorteados } from '../../services/lotofacil';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftShort, ArrowRightShort } from 'react-bootstrap-icons';
+import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 const Grupos = () => {
     const theme = useSelector((state) => state.theme.value)
     const themeText = theme === 'dark' ? 'light' : 'dark';
@@ -143,6 +144,7 @@ const Grupos = () => {
                 </div>
                 <div className='row'>
                     <div className={`col-12`}>
+                        <AnunciosGoogleComponent />
                         <h5 className={`text-${themeText}`}>Resultado dos Concursos - {concursos.length > 0 ? '#' + concursos[idConcurso].concurso : 'Carregando..'}</h5>
                         <div className={`row p-2 justify-content-center`}>
                             {sorteados.map(s => <div className='col-2 badge bg-primary text-white mb-1 ms-1 me-1'>{s}</div>)}
@@ -168,6 +170,7 @@ const Grupos = () => {
                         </div>
                     })}
                 </div>
+                
                 <FooterComponent />
             </main>
         </div>

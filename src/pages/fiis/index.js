@@ -7,6 +7,7 @@ import { Meses } from '../../utils/meses';
 import  DashboardBlockComponent from '../../components/DashboardBlock.Component';
 import ModalFormAportesComponent from '../../components/ModalForm.Component';
 import FooterComponent from '../../components/Footer.Component';
+import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 
 
 const Index = () => {
@@ -146,6 +147,7 @@ const Index = () => {
                     </div>
                    
                 </div>
+                <AnunciosGoogleComponent />
                 <FooterComponent />
             </main>
             <ModalFormAportesComponent id={idForm} update={mountTable}></ModalFormAportesComponent>

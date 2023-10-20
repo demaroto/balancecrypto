@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import LinkListComponent from '../../components/LinkList.Component';
 import FooterComponent from '../../components/Footer.Component';
 import { Link } from 'react-router-dom';
+import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
     const themeText = theme === 'dark' ? 'light' : 'dark';
@@ -21,6 +22,7 @@ const Index = () => {
                         <Link className="btn bg-dark text-white btn-lg">Obrigado!   </Link>
                     </div>
                 </div>
+                <AnunciosGoogleComponent />
             <FooterComponent />
             </main>
         </div>

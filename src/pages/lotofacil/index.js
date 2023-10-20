@@ -8,6 +8,7 @@ import FooterComponent from '../../components/Footer.Component';
 import QuadoNumerosSorteados from '../../components/QuadoNumerosSorteados';
 import { ArrowLeftShort, ArrowRightShort, Star, StarFill } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
+import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -242,6 +243,7 @@ const Index = () => {
                             <div className={`text-${themeText} h4`}>Qtd: {qtd} de 18</div>
 
                         </div>
+                        <AnunciosGoogleComponent />
                     </div>
                 </div>
                 <div className='row'>
@@ -297,6 +299,7 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
+               
                 <FooterComponent />
             </main>
             <ModalNumeros numeros={numeroModal} title={titleModal} pontos={pontosModal} resultado={sorteados}/>
