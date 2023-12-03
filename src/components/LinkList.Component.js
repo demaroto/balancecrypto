@@ -36,6 +36,14 @@ const LinkListComponent = () => {
                                 <li className='text-center my-1'><Link to={`/lotofacil`} className={`btn text-${themeText} btn-outline-success w-100`}>Lotofácil</Link></li>
                             </ul>
                         </li>
+                        <li className="nav-item dropdown ms-sm-0 ms-lg-1 mt-1 mt-lg-0">
+                            <Link className={`btn bg-success link-light nav-link dropdown-toggle text-white`} id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                EA Experts
+                            </Link>
+                            <ul className={`dropdown-menu bg-${theme}`} aria-labelledby="navbarDropdownMenuLink2">
+                                <li className='text-center my-1'><Link to={`/ea-experts/fmw`} className={`btn text-${themeText} btn-outline-success w-100`}>FMW</Link></li>
+                            </ul>
+                        </li>
                         <li><ThemeSwitcher /></li>
                     </ul>
                     </div>
