@@ -36,7 +36,7 @@ const Index = () => {
                         <div className='row d-grid gap-2'>
                           
                                 <Link className="btn btn-lg bg-success text-white" to={"#"}>Start Now</Link>
-                                <Link className="btn btn-lg bg-primary text-white text-center" to={"#"}><PlayBtn /> Watch the video</Link>
+                                <Link className="btn btn-lg bg-primary text-white text-center" target='_blank' to={"https://youtu.be/EFKNaHv30xg"}><PlayBtn /> Watch the video</Link>
                  
                         </div>
                     </div>
