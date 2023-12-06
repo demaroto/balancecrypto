@@ -35,7 +35,7 @@ const Index = () => {
                         </ul>
                         <div className='row d-grid gap-2'>
                           
-                                <Link className="btn btn-lg bg-success text-white" to={"#"}>Start Now</Link>
+                                <Link className="btn btn-lg bg-success text-white" to={"https://www.mql5.com/en/market/product/109431?source=balancecrypto.com.br"}>Start Now</Link>
                                 <Link className="btn btn-lg bg-primary text-white text-center" target='_blank' to={"https://youtu.be/EFKNaHv30xg"}><PlayBtn /> Watch the video</Link>
                  
                         </div>
