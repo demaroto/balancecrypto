@@ -17,21 +17,10 @@ const FooterComponent = () => {
 
             <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
             <li className="ms-3">
-                <Link className="text-muted" to={'https://www.instagram.com/wildemar.barbosa'} target='blank'>
+                <Link className="text-muted" to={'https://www.instagram.com/balancecrypto2024'} target='blank'>
                     <Instagram />
                 </Link>
             </li>
-            <li className="ms-3">
-                <Link className="text-muted" to={'https://twitter.com'} target='blank'>
-                    <Twitter />
-                </Link>
-            </li>
-            <li className="ms-3">
-                <Link className="text-muted" to={'https://www.linkedin.com/in/wildemar-barbosa/'} target='blank'>
-                    <Linkedin />
-                </Link>
-            </li>
-            
             </ul>
         </footer>
         </>

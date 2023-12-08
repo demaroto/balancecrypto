@@ -4,6 +4,7 @@ import LinkListComponent from '../../components/LinkList.Component';
 import FooterComponent from '../../components/Footer.Component';
 import { Link } from 'react-router-dom';
 import { PlayBtn } from 'react-bootstrap-icons';
+import AnunciosGoogleComponent from '../../components/AnunciosGoogle.Component';
 
 const Index = () => {
     const theme = useSelector((state) => state.theme.value)
@@ -48,7 +49,8 @@ const Index = () => {
                         <img className="img-fluid mt-5" src='/operation.jpg' alt="Print of Charts 2" />
                     </div>
                 </div>
-                
+                <AnunciosGoogleComponent />
+                <FooterComponent />
              </main>
         </div>
     );
