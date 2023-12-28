@@ -22,7 +22,6 @@ const Index = () => {
                             <div>
                                 <h4 className='h1'><Robot /></h4>
                                 <h5 className="card-title">FMW Auto Trend - EA Experts</h5>
-                                <p className="card-text">Robô para Metatrader 5, utilizando técnicas avançadas de suportes e resistências.</p>
                             </div>
                             </Link>
                         </div>
