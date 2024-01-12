@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/balancecrypto.github.io/precache-manifest.dc97a38763ce5e91b4efa0dbc7924555.js"
+  "/balancecrypto/precache-manifest.7b4c83b874b44bd9e84f9a99d898a6c8.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/balancecrypto.github.io/index.html", {
+workbox.routing.registerNavigationRoute("/balancecrypto/index.html", {
   
   blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
 });
