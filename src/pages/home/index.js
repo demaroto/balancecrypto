@@ -13,13 +13,6 @@ const Index = () => {
             <LinkListComponent />
             <main className={[theme, "container", "h-100", `bg-${theme}`].join(" ")}>
                 <div className='row'>
-                    <div className={`bg-${theme} p-5 rounded-lg mt-3`}>
-                        <h1 className={`display-4 text-${themeText}`}>Seja bem-vindo!</h1>
-                        <p className={`lead text-${themeText}`}>Este site contém ferramentas como calculadora de investimento de Crypto e Fiis, como geradores de jogos para loterias.</p>
-                        <p className={`lead text-${themeText}`}>Não solicitamos nenhum dado pessoal, nem fazemos recomendações de investimentos. Todos geradores, calculadoras e outras ferramentas serão auxiliadores financeiros.</p>
-                        <hr className="my-4" />
-                    </div>
-
                     <div>
                     <h2 className={`text-${themeText}`}>Novidades</h2>
                     <div className='row justify-content-start'>
@@ -30,7 +23,7 @@ const Index = () => {
                                 <h5 className="card-title">FMW - EA Experts</h5>
                                 <p className="card-text">Robô para Metatrader 5, utilizando técnicas avançadas de suportes e resistências.</p>
                                 <Link target='_blank' to={`https://www.mql5.com/en/market/product/109431?source=balancecrypto.com.br`} className="btn btn-primary">Conhecer</Link>
-                                <Link to={`/ea-experts/fmw`} className="ms-1 btn btn-secondary">Saiba Mais</Link>
+                                <Link target='_blank' to={`https://www.youtube.com/watch?v=DoAsJ-Vem60`} className="ms-1 btn btn-secondary">Saiba Mais</Link>
                                
                             </div>
                         </div>
